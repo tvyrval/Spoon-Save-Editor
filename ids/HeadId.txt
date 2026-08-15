@@ -1,0 +1,95 @@
+Item ID	Name
+0	ARINOMAMA
+1	White Headband
+1000	Urchins Cap
+1001	Lightweight Cap
+1002	Takoroka Mesh
+1003	Fashion Cap
+1004	Squid-Stitch Cap
+1005	Squidvader Cap
+1006	Camo Mesh Cap
+1007	5-Panel Cap
+1008	Zekko Mesh
+1009	Backwards Cap
+1010	2-Stripe Mesh Cap
+1011	Jet Cap
+1012	Cycling Cap
+1013	SQUID GIRL Hat
+1014	Cycle King Cap
+1015	Legendary Cap
+1016	CoroCoro Cap
+2000	Bobble Hat
+2001	Short Beanie
+2002	Striped Beanie
+2003	Sporty Bobble Hat
+2004	Special Forces Beret
+2005	Squid Nordic
+3000	Retro Specs
+3001	Splash Goggles
+3002	Pilot Goggles
+3003	Coloured Shades
+3004	Black Arrowbands
+3005	Snorkel
+3006	White Arrowbands
+3007	Fake Contacts
+3008	18K Aviators
+3009	Full Moon Glasses
+3010	Octoglasses
+4000	Jungle Hat
+4001	Safari Hat
+4002	Camping Hat
+4003	Fugu Bell Hat
+4004	Bambo Hat
+4005	Straw Boater
+4006	Classic Straw Boater
+4007	Treasure Hunter
+5000	Studio Headphones
+5001	Colourful Headphones
+5002	Noise Cancellers
+6000	Golf Visor
+6001	FishFry Visor
+6002	Sun Visor
+7000	Cycle Helmet
+7002	Stealth Goggles
+7003	Tentacles Helmet
+7004	Skate Helmet
+7005	Visor Skate Helmet
+8000	Gas Mask
+8001	Paintball Mask
+8002	Paisley Bandana
+8003	Skull Bandana
+9001	B-Ball Headband
+9002	Squash Headband
+9003	Tennis Headband
+9004	Joggling Headband
+9005	Football Headband
+9006	Traditional Headband
+25000	Squid Hairclip
+25001	Samurai Helmet
+25002	Power Mask
+27000	Hero Headset Replica
+27001	?MSN001
+27002	?MSN002
+27003	?MSN003
+27004	?MSN004
+28000	Octoling Scope
+28001	ヘルメットライバル用強
+29000	?Attack_Up
+29001	?Defense_Up
+29002	?MainInk_Save
+29003	?SubInk_Save
+29004	?Inkrecovery_Up
+29005	?HumanMove_Up
+29006	?SquidMove_Up
+29007	?SpecialIncrease_Up
+29008	?SpecialTime_Up
+29009	?RespawnTime_Save
+29010	?RespawnSpecialGauge_Save
+29011	?JumpTime_Save
+29012	?BombDistance_Up
+29013	?StartAllUp
+29014	?EndAllUp
+29015	?MinorityUp
+29016	?ComeBack
+29500	?SUP000
+29501	?SUP001

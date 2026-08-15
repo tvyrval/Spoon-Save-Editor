@@ -1,0 +1,252 @@
+Item ID	Name
+0	?NoClothes
+1	Basic Tee
+1000	White Tee
+1001	Black Squideye
+1003	Sky Blue Squideye
+1004	Rockenberg White
+1005	RockenBerg Black
+1006	Black Tee
+1007	Sunny Day Tee
+1008	Rainy Day Tee
+1009	Reggae Tee
+1010	Fugu Tee
+1011	Mint Tee
+1012	Grape Tee
+1013	Red Vector Tee
+1014	Grey Vector Tee
+1015	Blue Peaks Tee
+1016	Ivory Peaks Tee
+1017	Squid-Stitch Tee
+1018	Pirate Stripes Tee
+1019	Sailor Stripes Tee
+1020	White 8-Bit FishFry
+1021	Black 8-Bit FishFry
+1022	White Anchor Tee
+1023	Black Anchor Tee
+1024	White Line Tee
+1025	Black Pipe Tee
+1026	Carnivore Tee
+1027	Pearl Tee
+1028	Octo Tee
+1029	Herbivore Tee
+2000	White Striped LS
+2001	Black LS
+2002	Purple Camo LS
+2003	Navy Striped LS
+2004	Zekko Baseball LS
+2005	Varsity Baseball
+2006	Black Baseball LS
+2007	White Baseball LS
+2008	White LS
+2009	Green Striped LS
+2010	Squidmark LS
+2011	Zink LS
+2012	Striped Peaks LS
+3000	White Layered LS
+3001	Yellow Layered LS
+3002	Layered Camo LS
+3003	Black Layered LS
+3004	Zink Layered LS
+3005	Layered Anchor LS
+3006	Choco Layered LS
+3007	Part-Time Pirate
+3008	Layered Vector LS
+3009	Green Tee
+4000	Pink Shrimp Polo
+4001	Striped Rugby
+4002	Tricolour Rugby
+4003	Sage Green Polo
+4004	Black Polo
+4005	Cycling Shirt
+4006	Cycle King Jersey
+4007	Slipstream United
+4008	FC Albacore
+5000	Olive Ski Jacket
+5002	Berry Ski Jacket
+5003	Varsity Jacket
+5004	School Jersey
+5005	Green Cardigan
+5006	Black Inky Rider
+5007	White Inky Rider
+5008	Retro Gamer Jersey
+5009	Orange Cardigan
+5010	Forge Inkling Perka
+5011	Forge Octarian Jacket
+5012	Blue Sailor Suit
+5013	White Sailor Suit
+5014	Squid Satin Jacket
+5015	Zapfish Satin Jacket
+5016	Krak-On 528
+6000	B-Ball Vest (Home)
+6001	B-Ball Vest (Away)
+6002	SQUID GIRL Tunic
+7000	Grey College Sweat
+7001	Squidmark Sweat
+7002	Retro Sweat
+7003	Firefin Sweat Navy
+7004	Navy Collage Sweat
+7005	Reel Sweat
+7006	Anchor Sweat
+8000	Lumberjack Shirt
+8001	Rodeo Shirt
+8002	Green Check Shirt
+8003	White Shirt
+8004	Urchins Jersey
+8005	Aloha Shirt
+8006	Red Check Shirt
+8007	Baby Jelly Shirt
+8008	Baseball Jersey
+8009	Grey Mixed Shirt
+8010	Vintage Check
+8011	Round Collar Shirt
+8012	Logo Aloha Shirt
+8013	Striped Shirt
+8014	Linen Shirt
+8015	Shirt and Tie
+8016	Traditional Apron
+9000	Mountain Gilet
+9001	Forest Gilet
+9002	Dark Urban Gilet
+9003	Yellow Urban Gilet
+9004	Squid Pattern Waistcoat
+9005	Squidstar Waistcoat
+10000	Camo Zip Hoodie
+10001	Green Zip Hoodie
+10002	Zekko Hoodie
+10003	CoroCoro Hoodie
+25000	School Uniform
+25001	Samurai Jacket
+25002	Power Armour
+27000	?MSN000
+27001	?MSN001
+27002	?MSN002
+27003	?MSN003
+27004	Armour Jacket Replica
+28000	Octoling Armour
+26000	Splatfest Tee
+26001	HAP001_A
+26002	Test_Clt_HAP001_B
+26033	Test_Clt_HAP1001_A
+26034	Test_Clt_HAP1001_B
+26035	Test_Clt_HAP2001_A
+26036	Test_Clt_HAP2001_B
+26037	Test_Clt_HAP3001_A
+26038	Test_Clt_HAP3001_B
+26039	Test_Clt_HAP1002_A
+26040	Test_Clt_HAP1002_B
+26041	Test_Clt_HAP2002_A
+26042	Test_Clt_HAP2002_B
+26043	Test_Clt_HAP3002_A
+26044	Test_Clt_HAP3002_B
+26045	Test_Clt_HAP1003_A
+26046	Test_Clt_HAP1003_B
+26047	Test_Clt_HAP2003_A
+26048	Test_Clt_HAP2003_B
+26049	Test_Clt_HAP3003_A
+26050	Test_Clt_HAP3003_B
+26051	Test_Clt_HAP1012_A
+26052	Test_Clt_HAP1012_B
+26053	Test_Clt_HAP2004_A
+26054	Test_Clt_HAP2004_B
+26055	Test_Clt_HAP3004_A
+26056	Test_Clt_HAP3004_B
+26057	Test_Clt_HAP1005_A
+26058	Test_Clt_HAP1005_B
+26059	Test_Clt_HAP2005_A
+26060	Test_Clt_HAP2005_B
+26061	HAP1007_A
+26062	HAP1007_B
+26063	HAP2006_A
+26064	HAP2006_B
+26065	HAP1008_A
+26066	HAP1008_B
+26067	HAP2007_A
+26068	HAP2007_B
+26069	HAP3007_A
+26070	HAP3007_B
+26071	HAP1009_A
+26072	HAP1009_B
+26073	HAP2008_A
+26074	HAP2008_B
+26075	HAP3008_A
+26076	HAP3008_B
+26077	HAP1015_A
+26078	HAP1015_B
+26079	HAP2009_A
+26080	HAP2009_B
+26081	HAP3009_A
+26082	HAP3009_B
+26083	HAP3010_A
+26084	HAP3010_B
+26085	HAP1011_A
+26086	HAP1011_B
+26087	HAP2011_A
+26088	HAP2011_B
+26089	HAP3011_A
+26090	HAP3011_B
+26091	HAP3012_A
+26092	HAP3012_B
+26093	HAP1013_A
+26094	HAP1013_B
+26095	HAP3013_A
+26096	HAP3013_B
+26097	HAP1017_A
+26098	HAP1017_B
+26099	HAP1018_A
+26100	HAP1018_B
+26101	HAP3014_A
+26102	HAP3014_B
+26105	HAP2016_A
+26106	HAP2016_B
+26107	HAP3019_A
+26108	HAP3019_B
+26103	HAP2019_A
+26104	HAP2019_B
+26109	HAP1021_A
+26110	HAP1021_B
+26111	HAP2020_A
+26112	HAP2020_B
+26113	HAP3020_A
+26114	HAP3020_B
+26115	HAP3021_A
+26116	HAP3021_B
+26117	HAP1022_A
+26118	HAP1022_B
+26119	HAP1023_A
+26120	HAP1023_B
+26121	HAP3022_A
+26122	HAP3022_B
+26123	HAP3023_A
+26124	HAP3023_B
+26125	HAP1024_A
+26126	HAP1024_B
+26127	HAP1025_A
+26128	HAP1025_B
+26129	HAP1020_A
+26130	HAP1020_B
+26131	HAP1026_A
+26132	HAP1026_B
+26133	HAP3024_A
+26134	HAP3024_B
+26135	HAP2021_A
+26136	HAP2021_B
+29000	?Attack_Up
+29001	?Defense_Up
+29002	?MainInk_Save
+29003	?SubInk_Save
+29004	?InkRecovery_Up
+29005	?HumanMove_Up
+29006	?SquidMove_Up
+29007	?SpecialIncrease_Up
+29008	?SpecialTime_Up
+29009	?RespawnTime_Save
+29010	?RespawnSpecialGauge_Save
+29011	?JumpTime_Save
+29012	?BombDistance_Up
+29013	?MarkingCancel
+29014	?SquidMoveSpatter_Reduction
+29015	?DeathMarking
+29016	?RespawnRadar
+29500	?SUP000
+29501	?SUP001

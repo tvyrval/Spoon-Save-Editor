@@ -1,0 +1,90 @@
+Item ID	Name
+0	ありのまま
+1	Cream Basics
+1000	Blue Lo-Tops
+1001	Banana Basics
+1002	LE Lo-Tops
+1003	White Seahorses
+1004	Orange Lo-Tops
+1005	Black Seahorses
+1006	Clownfish Basics
+1007	Yellow Seahorses
+1008	Strapping Whites
+1009	Strapping Reds
+1010	Soccer Cleats
+1011	LE Soccer Cleats
+2000	Red Hi-Horses
+2001	Zombie Hi-Horses
+2002	Cream Hi-Tops
+2003	Purple Hi-Horses
+2004	Hunter Hi-Tops
+2005	Red Hi-Tops
+2006	Gold Hi_Horses
+2007	SQUID GIRL Shoes
+2008	Shark Mawcasins
+2009	Mawcasins
+3000	Pink Trainers
+3001	Orange Arrows
+3002	Neon Sea Slugs
+3003	White Arrows
+3004	Cyan Trainers
+3005	Purple Sea Slugs
+3006	Red Sea Slugs
+3007	Blue Sea Slugs
+3008	Crazy Arrows
+3009	Black Trainers
+4000	Oyster Clogs
+4001	Choco Clogs
+4002	Blueberry Casuals
+4003	Plum Casuals
+4006	Traditional Sandals
+5000	Trail Boots
+5001	Custom Trail Boots
+5002	Pro Trail Boots
+6000	Moto Boots
+6001	Tan Work Boots
+6002	Red Work Boots
+6003	Blue Moto Boots
+6004	Green Rain Boots
+6005	Acerola Rain Boots
+6006	Punk Whites
+6007	Punk Cherries
+6008	Punk Yellows
+6009	Bubble Rain Boots
+6010	Snowy Down Boots
+6011	Icy Down Boots
+7000	Blue Slip-Ons
+7001	Red Slip-Ons
+7002	Squid-Stitch Slip-Ons
+8000	White Kicks
+8001	Cherry Kicks
+8002	Turquoise Kicks
+8003	Squink Wingtips
+8004	Roasted Brogues
+25000	School Shoes
+25001	Samurai Shoes
+25002	Power Boots
+27000	Hero Runner Replica
+27001	?MSN001
+27002	?MSN002
+27003	?MSN003
+27004	Armour Boot Replicas
+28000	Octoling Boots
+29000	?Attack_Up
+29001	?Defense_Up
+29002	?MainInk_Save
+29003	?SubInk_Save
+29004	?Inkrecovery_Up
+29005	?HumanMove_Up
+29006	?SquidMove_Up
+29007	?SpecialIncrease_Up
+29008	?SpecialTime_Up
+29009	?RespawnTime_Save
+29010	?RespawnSpecialGauge_Save
+29011	?JumpTime_Save
+29012	?BombDistance_Up
+29013	?TrapDetect
+29014	?EnemyInkEffect_Reduction
+29015	?SuperJumpSign_Hide
+29500	?SUP000
+29501	?SUP001
