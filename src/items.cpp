@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "ItemData.h"
 
 const wchar_t* g_SkinColorNames[] = {
     L"0 (Lightest)",

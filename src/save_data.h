@@ -1,3 +1,7 @@
+#ifndef _MSC_VER
+#define _byteswap_ulong __builtin_bswap32
+#endif
+
 #pragma once
 #include <stdint.h>
 #include <stdlib.h>
