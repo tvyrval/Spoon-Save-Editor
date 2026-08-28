@@ -259,11 +259,16 @@ alpine-debug: builds/debug | $(COMP_DIR)
 # WINDOWS (Native MSYS2/CMake)
 # ==============================================================================
 
+# Detect active MSYS2 environment directory dynamically (falls back to /mingw64)
+MSYS_ENV_PREFIX := $(or $(MINGW_PREFIX),/mingw64)
+
 windows: builds/release
 	@echo "==> Building Windows Release binary natively..."
-	cmake -S . -B "build/win-release" -DCMAKE_BUILD_TYPE=Release
+	cmake -S . -B "build/win-release" -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
 	cmake --build "build/win-release" --parallel
 	cp "build/win-release/$(BIN_NAME).exe" "builds/release/$(BIN_NAME).exe"
+	windeployqt "builds/release/$(BIN_NAME).exe"
+	cp $(MSYS_ENV_PREFIX)/bin/*.dll "builds/release/" 2>/dev/null || true
 
 windows-debug: builds/debug
 	@echo "==> Building Windows Debug binary natively..."
