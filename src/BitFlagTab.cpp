@@ -31,7 +31,7 @@ static const uint32_t kGameMasks[12] = {
 
 BitFlagTab::BitFlagTab(QWidget* parent) : EditorTabBase(parent) {
     auto* root = new QVBoxLayout(this);
-    auto* box = new QGroupBox(tr("Story Mode & Multiplayer Flags"), this);
+    auto* box = new QGroupBox(tr("Story Mode && Multiplayer Flags"), this);
     auto* bl = new QVBoxLayout(box);
     for (int i = 0; i < 14; ++i) {
         m_flags[i] = new QCheckBox(QString::fromLatin1(kFlagLabels[i]), box);

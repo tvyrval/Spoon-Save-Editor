@@ -79,6 +79,7 @@ void MainWindow::createMenus() {
     QMenu* fileMenu = mb->addMenu(tr("&File"));
     m_actOpen = fileMenu->addAction(tr("&Open..."));
     m_actSave = fileMenu->addAction(tr("&Save"));
+    m_actSaveAs = fileMenu->addAction(tr("&Save As..."));
     fileMenu->addSeparator();
     m_actExit = fileMenu->addAction(tr("E&xit"));
 
@@ -95,6 +96,7 @@ void MainWindow::createMenus() {
 
     connect(m_actOpen, &QAction::triggered, this, &MainWindow::openFile);
     connect(m_actSave, &QAction::triggered, this, &MainWindow::saveFile);
+    connect(m_actSaveAs, &QAction::triggered, this, &MainWindow::saveAsFile);
     connect(m_actExit, &QAction::triggered, qApp, &QApplication::quit);
     connect(m_actShowIDs, &QAction::toggled, this, &MainWindow::onShowInternalIDsToggled);
     connect(m_actSortAlpha, &QAction::toggled, this, &MainWindow::onSortByAlphabetToggled);
@@ -151,6 +153,23 @@ void MainWindow::saveFile() {
 
     refreshWindowTitle();
     statusBar()->showMessage(tr("Saved: %1").arg(path), 4000);
+}
+
+void MainWindow::saveAsFile() {
+    if (!m_save->hasData()) {
+        QMessageBox::warning(this, tr("Error"), tr("No file loaded."));
+        return;
+    }
+
+    const QString path = QFileDialog::getSaveFileName(
+        this, tr("Save As..."), QString(),
+        tr("Dat Files (*.dat);;All Files (*)"));
+    if (path.isEmpty()) return;
+
+    if (!m_save->saveFile(path.toStdString())) {
+        QMessageBox::warning(this, tr("Error"), tr("Failed to write the save file."));
+        return;
+    }
 }
 
 void MainWindow::brickSave() {

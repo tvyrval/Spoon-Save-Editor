@@ -22,6 +22,7 @@ public:
 private slots:
     void openFile();
     void saveFile();
+    void saveAsFile();
     void brickSave();
     void showAbout();
     void onShowInternalIDsToggled(bool checked);
@@ -41,6 +42,7 @@ private:
 
     QAction* m_actOpen;
     QAction* m_actSave;
+    QAction* m_actSaveAs;
     QAction* m_actExit;
     QAction* m_actShowIDs;
     QAction* m_actSortAlpha;

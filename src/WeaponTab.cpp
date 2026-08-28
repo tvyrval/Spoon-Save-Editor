@@ -41,7 +41,7 @@ WeaponTab::WeaponTab(QWidget* parent) : EditorTabBase(parent) {
     auto* editBox = new QGroupBox(tr("Edit Selected Attributes"), this);
     auto* editLay = new QVBoxLayout(editBox);
     auto* t1 = new QHBoxLayout; t1->addWidget(new QLabel(tr("Turf Inked:")));
-    m_turf = new QLineEdit; m_turf->setMaxLength(7); t1->addWidget(m_turf); editLay->addLayout(t1);
+    m_turf = new QLineEdit; m_turf->setMaxLength(6); t1->addWidget(m_turf); editLay->addLayout(t1);
     m_newFlag = new QCheckBox(tr("Mark as 'New'")); editLay->addWidget(m_newFlag);
     m_apply = new QPushButton(tr("Apply Stats")); editLay->addWidget(m_apply);
     mid->addWidget(editBox);

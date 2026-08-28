@@ -27,7 +27,7 @@ PlazaTab::PlazaTab(QWidget* parent) : EditorTabBase(parent) {
 
     auto* detailBox = new QGroupBox(tr("Player Details"), this);
     auto* df = new QFormLayout(detailBox);
-    m_name = new QLineEdit;
+    m_name = new QLineEdit; m_name->setMaxLength(16);
     m_level = new QLineEdit; m_level->setMaxLength(4);
     m_rank = new QComboBox;
     m_turf = new QLineEdit; m_turf->setMaxLength(7);
