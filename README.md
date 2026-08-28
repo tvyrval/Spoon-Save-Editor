@@ -1,2 +1,2 @@
 # Spoon-Save-Editor
-Spoon Save Editor is a binary splatoon 1 save that editor.
+Spoon Save Editor is a save editor for Splatoon on the Wii U written in C++.
