@@ -36,7 +36,7 @@ WeaponTab::WeaponTab(QWidget* parent) : EditorTabBase(parent) {
     m_list = new QListWidget(invBox);
     m_list->setSelectionMode(QAbstractItemView::ExtendedSelection);
     invLay->addWidget(m_list);
-    mid->addWidget(invBox);
+    mid->addWidget(invBox, 2);
 
     auto* editBox = new QGroupBox(tr("Edit Selected Attributes"), this);
     auto* editLay = new QVBoxLayout(editBox);
@@ -44,8 +44,7 @@ WeaponTab::WeaponTab(QWidget* parent) : EditorTabBase(parent) {
     m_turf = new QLineEdit; m_turf->setMaxLength(6); t1->addWidget(m_turf); editLay->addLayout(t1);
     m_newFlag = new QCheckBox(tr("Mark as 'New'")); editLay->addWidget(m_newFlag);
     m_apply = new QPushButton(tr("Apply Stats")); editLay->addWidget(m_apply);
-    mid->addWidget(editBox);
-    root->addLayout(mid, 1);
+    editLay->addStretch(1);
 
     auto* addBox = new QGroupBox(tr("Add New Weapon"), this);
     auto* addLay = new QHBoxLayout(addBox);
@@ -56,7 +55,12 @@ WeaponTab::WeaponTab(QWidget* parent) : EditorTabBase(parent) {
     m_del = new QPushButton(tr("Delete"));
     addLay->addWidget(m_add);
     addLay->addWidget(m_del);
-    root->addWidget(addBox);
+
+    auto* rightLayout = new QVBoxLayout;
+    rightLayout->addWidget(editBox);
+    rightLayout->addWidget(addBox);
+    mid->addLayout(rightLayout, 3);
+    root->addLayout(mid, 1);
 
     connect(m_list, &QListWidget::itemSelectionChanged, this, &WeaponTab::onListSelectionChanged);
     connect(m_apply, &QPushButton::clicked, this, &WeaponTab::onApply);

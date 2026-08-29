@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget* parent)
       m_tabs(new QTabWidget(this)),
       m_save(new SaveManager()) {
     setWindowIcon(QIcon(":/images/icon.png"));
-    setMinimumSize(860, 640);
+    setMinimumSize(860, 540);
 
     createMenus();
     createTabs();
@@ -195,13 +195,18 @@ void MainWindow::brickSave() {
     statusBar()->showMessage(tr("Save data bricked in memory. Use Save to write it."), 6000);
 }
 
+#ifndef APP_VERSION
+#define APP_VERSION "Unknown"
+#endif
+
 void MainWindow::showAbout() {
-    QMessageBox::about(this, tr("About"),
-        QStringLiteral(
-            "Spoon Save Editor\n"
-            "Made by @tvyrval / vyrval\n"
-            "UI made by @jerrysm64 / Jerry Starke\n"
-            "Version: 1.0.0"));
+    QString aboutText = QStringLiteral(
+        "Spoon Save Editor\n"
+        "Made by @tvyrval / vyrval\n"
+        "UI made by @jerrysm64 / Jerry Starke\n"
+        "Version: %1").arg(QStringLiteral(APP_VERSION));
+
+    QMessageBox::about(this, tr("About"), aboutText);
 }
 
 void MainWindow::onShowInternalIDsToggled(bool /*checked*/) {

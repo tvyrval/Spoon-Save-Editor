@@ -17,15 +17,17 @@ static QWidget* buildChallengePage(QVector<QComboBox*>& combos, QWidget* parent)
     auto* box = new QGroupBox(QStringLiteral("Amiibo Challenges"), page);
     auto* grid = new QGridLayout(box);
     for (int j = 0; j < 20; ++j) {
-        int col = (j < 10) ? 0 : 1;
         int row = (j < 10) ? j : j - 10;
+        int labelCol = (j < 10) ? 0 : 2;
+        int comboCol = (j < 10) ? 1 : 3;
         auto* cb = new QComboBox(box);
-        grid->addWidget(new QLabel(QStringLiteral("Challenge %1:").arg(j + 1)), row * 2, col);
-        grid->addWidget(cb, row * 2 + 1, col);
+        grid->addWidget(new QLabel(QStringLiteral("Challenge %1:").arg(j + 1)), row, labelCol);
+        grid->addWidget(cb, row, comboCol);
         combos.append(cb);
     }
     auto* l = new QVBoxLayout(page);
     l->addWidget(box);
+    l->addStretch(1);
     return page;
 }
 

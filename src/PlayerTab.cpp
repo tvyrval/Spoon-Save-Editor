@@ -12,6 +12,7 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QGridLayout>
 #include <cmath>
 #include <cstring>
 
@@ -22,7 +23,7 @@ PlayerTab::PlayerTab(QWidget* parent) : EditorTabBase(parent) {
 
     auto* stats = new QWidget;
     auto* sBox = new QGroupBox(tr("Player Statistics"), stats);
-    auto* sf = new QFormLayout(sBox);
+    auto* sg = new QGridLayout(sBox);
     m_level = new QLineEdit; m_level->setMaxLength(4);
     m_levelPts = new QLineEdit; m_levelPts->setMaxLength(4);
     m_rank = new QComboBox;
@@ -30,14 +31,11 @@ PlayerTab::PlayerTab(QWidget* parent) : EditorTabBase(parent) {
     m_money = new QLineEdit; m_money->setMaxLength(7);
     m_snails = new QLineEdit; m_snails->setMaxLength(3);
     m_newsVersion = new QLineEdit; m_newsVersion->setMaxLength(3);
-    sf->addRow(tr("Level:"), m_level);
-    sf->addRow(tr("Level Points:"), m_levelPts);
-    sf->addRow(tr("Rank:"), m_rank);
-    sf->addRow(tr("Rank Points:"), m_rankPts);
-    sf->addRow(tr("Money Value:"), m_money);
-    sf->addRow(tr("Sea Snails:"), m_snails);
-    sf->addRow(tr("Update Version:"), m_newsVersion);
-    auto* sLay = new QVBoxLayout(stats); sLay->addWidget(sBox);
+    sg->addWidget(new QLabel(tr("Level:")), 0, 0); sg->addWidget(m_level, 0, 1); sg->addWidget(new QLabel(tr("Level Points:")), 0, 2); sg->addWidget(m_levelPts, 0, 3);
+    sg->addWidget(new QLabel(tr("Rank:")), 1, 0); sg->addWidget(m_rank, 1, 1); sg->addWidget(new QLabel(tr("Rank Points:")), 1, 2); sg->addWidget(m_rankPts, 1, 3);
+    sg->addWidget(new QLabel(tr("Money:")), 2, 0); sg->addWidget(m_money, 2, 1); sg->addWidget(new QLabel(tr("Sea Snails:")), 2, 2); sg->addWidget(m_snails, 2, 3);
+    sg->addWidget(new QLabel(tr("Update Version:")), 3, 0); sg->addWidget(m_newsVersion, 3, 1);
+    auto* sLay = new QVBoxLayout(stats); sLay->addWidget(sBox); sLay->addStretch(1);
     tabs->addTab(stats, tr("Stats"));
 
     auto* appear = new QWidget;
@@ -49,23 +47,21 @@ PlayerTab::PlayerTab(QWidget* parent) : EditorTabBase(parent) {
     af->addRow(tr("Gender:"), m_gender);
     af->addRow(tr("Skin Color:"), m_skin);
     af->addRow(tr("Eye Color:"), m_eye);
-    auto* aLay = new QVBoxLayout(appear); aLay->addWidget(aBox);
+    auto* aLay = new QVBoxLayout(appear); aLay->addWidget(aBox); aLay->addStretch(1);
     tabs->addTab(appear, tr("Appearance"));
 
     auto* sfest = new QWidget;
     auto* sfBox = new QGroupBox(tr("Splatfest Data"), sfest);
-    auto* sff = new QFormLayout(sfBox);
+    auto* sfg = new QGridLayout(sfBox);
     m_sfId = new QLineEdit; m_sfId->setMaxLength(4);
     m_sfTeam = new QComboBox;
     m_sfPower = new QLineEdit;
     m_sfXp = new QLineEdit;
     m_sfRank = new QComboBox;
-    sff->addRow(tr("Splatfest ID:"), m_sfId);
-    sff->addRow(tr("Splatfest Team:"), m_sfTeam);
-    sff->addRow(tr("Splatfest Power:"), m_sfPower);
-    sff->addRow(tr("Splatfest XP:"), m_sfXp);
-    sff->addRow(tr("Splatfest Title:"), m_sfRank);
-    auto* sfLay = new QVBoxLayout(sfest); sfLay->addWidget(sfBox);
+    sfg->addWidget(new QLabel(tr("Splatfest ID:")), 0, 0); sfg->addWidget(m_sfId, 0, 1); sfg->addWidget(new QLabel(tr("Splatfest Team:")), 0, 2); sfg->addWidget(m_sfTeam, 0, 3);
+    sfg->addWidget(new QLabel(tr("Splatfest Title:")), 1, 0); sfg->addWidget(m_sfRank, 1, 1); sfg->addWidget(new QLabel(tr("Splatfest XP:")), 1, 2); sfg->addWidget(m_sfXp, 1, 3);
+    sfg->addWidget(new QLabel(tr("Splatfest Power:")), 2, 0); sfg->addWidget(m_sfPower, 2, 1);
+    auto* sfLay = new QVBoxLayout(sfest); sfLay->addWidget(sfBox); sfLay->addStretch(1);
     tabs->addTab(sfest, tr("Splatfest"));
 
     auto* ctrl = new QWidget;
@@ -87,6 +83,7 @@ PlayerTab::PlayerTab(QWidget* parent) : EditorTabBase(parent) {
     m_camSens = new QLineEdit;
     camRow->addRow(tr("Camera Sensitivity (-5 to 5):"), m_camSens);
     cl->addLayout(camRow);
+    cl->addStretch(1);
     auto* cLay = new QVBoxLayout(ctrl); cLay->addWidget(cBox);
     tabs->addTab(ctrl, tr("Control Settings"));
 }

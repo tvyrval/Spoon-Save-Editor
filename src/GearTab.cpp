@@ -45,7 +45,7 @@ GearSubTab::GearSubTab(QWidget* parent) : QWidget(parent) {
     m_list = new QListWidget;
     m_list->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ib->addWidget(m_list);
-    mid->addWidget(invBox);
+    mid->addWidget(invBox, 2);
 
     auto* editBox = new QGroupBox(tr("Edit Selected Attributes"), this);
     auto* ed = new QVBoxLayout(editBox);
@@ -59,8 +59,7 @@ GearSubTab::GearSubTab(QWidget* parent) : QWidget(parent) {
     ed->addLayout(st);
     m_newFlag = new QCheckBox(tr("Mark as 'New'")); ed->addWidget(m_newFlag);
     m_apply = new QPushButton(tr("Apply Stats")); ed->addWidget(m_apply);
-    mid->addWidget(editBox);
-    root->addLayout(mid, 1);
+    ed->addStretch(1);
 
     auto* addBox = new QGroupBox(tr("Add New Gear"), this);
     auto* ab = new QHBoxLayout(addBox);
@@ -71,7 +70,12 @@ GearSubTab::GearSubTab(QWidget* parent) : QWidget(parent) {
     m_del = new QPushButton(tr("Delete"));
     ab->addWidget(m_add);
     ab->addWidget(m_del);
-    root->addWidget(addBox);
+
+    auto* rightLayout = new QVBoxLayout;
+    rightLayout->addWidget(editBox);
+    rightLayout->addWidget(addBox);
+    mid->addLayout(rightLayout, 3);
+    root->addLayout(mid, 1);
 
     etab::fillAbilityCombo(m_sub1, false, false);
     etab::fillAbilityCombo(m_sub2, false, false);
@@ -262,7 +266,7 @@ GearTab::GearTab(QWidget* parent) : EditorTabBase(parent) {
     m_head = new GearSubTab(this);
     m_clothes = new GearSubTab(this);
     m_shoes = new GearSubTab(this);
-    m_subTabs->addTab(m_head, tr("Head"));
+    m_subTabs->addTab(m_head, tr("Headgear"));
     m_subTabs->addTab(m_clothes, tr("Clothes"));
     m_subTabs->addTab(m_shoes, tr("Shoes"));
 }

@@ -23,6 +23,7 @@ MinigameTab::MinigameTab(QWidget* parent) : EditorTabBase(parent) {
     ul->addWidget(m_sbLock);
     ul->addWidget(m_srLock);
     ul->addWidget(m_sbzLock);
+    ul->addStretch(1);
     root->addWidget(unlockBox);
 
     auto* scoreBox = new QGroupBox(tr("High Scores"), this);
