@@ -19,24 +19,24 @@ qt_standard_project_setup()
 
 qt_add_executable(spoon_save_editor
     src/main.cpp
-    src/MainWindow.h
-    src/MainWindow.cpp
-    src/SaveManager.h
-    src/SaveManager.cpp
-    src/ItemData.h
-    src/ItemData.cpp
-    src/EditorTabUtils.h
-    src/EditorTabUtils.cpp
-    src/EditorTabs.h
-    src/WeaponTab.cpp
-    src/GearTab.cpp
-    src/PlayerTab.cpp
-    src/HeroTab.cpp
-    src/PlazaTab.cpp
-    src/AmiiboTab.cpp
-    src/MinigameTab.cpp
-    src/SpykeTab.cpp
-    src/BitFlagTab.cpp
+    src/core/SaveManager.h
+    src/core/SaveManager.cpp
+    src/core/ItemData.h
+    src/core/ItemData.cpp
+    src/ui/MainWindow.h
+    src/ui/MainWindow.cpp
+    src/ui/utils/EditorTabUtils.h
+    src/ui/utils/EditorTabUtils.cpp
+    src/ui/tabs/EditorTabs.h
+    src/ui/tabs/WeaponTab.cpp
+    src/ui/tabs/GearTab.cpp
+    src/ui/tabs/PlayerTab.cpp
+    src/ui/tabs/HeroTab.cpp
+    src/ui/tabs/PlazaTab.cpp
+    src/ui/tabs/AmiiboTab.cpp
+    src/ui/tabs/MinigameTab.cpp
+    src/ui/tabs/SpykeTab.cpp
+    src/ui/tabs/BitFlagTab.cpp
 )
 
 qt_add_resources(spoon_save_editor appicons
@@ -44,7 +44,13 @@ qt_add_resources(spoon_save_editor appicons
     FILES images/icon.png
 )
 
-target_include_directories(spoon_save_editor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(spoon_save_editor PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/tabs
+)
 
 target_link_libraries(spoon_save_editor PRIVATE
     Qt6::Core

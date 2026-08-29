@@ -74,7 +74,7 @@ cat > "$$AD/usr/share/applications/$(BIN_NAME).desktop" <<'DESK'
 [Desktop Entry]
 Type=Application
 Name=Spoon Save Editor
-Comment=Splatoon 1 save file editor
+Comment=Save file editor for Splatoon on the Wii U
 Exec=spoon_save_editor
 Icon=spoon_save_editor
 Categories=Game;Utility;
@@ -190,7 +190,7 @@ cat > "$$AD/usr/share/applications/$(BIN_NAME).desktop" <<'DESK'
 [Desktop Entry]
 Type=Application
 Name=Spoon Save Editor
-Comment=Splatoon 1 save file editor
+Comment=Save File Editor for Splatoon on the Wii U
 Exec=spoon_save_editor
 Icon=spoon_save_editor
 Categories=Game;Utility;
@@ -263,7 +263,7 @@ alpine-debug: builds/debug | $(COMP_DIR)
 MSYS_ENV_PREFIX := $(or $(MINGW_PREFIX),/mingw64)
 
 windows: builds/release
-	@echo "==> Building Windows Release binary natively..."
+	@echo "==> Building Windows Release binary..."
 	cmake -S . -B "build/win-release" -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
 	cmake --build "build/win-release" --parallel
 	cp "build/win-release/$(BIN_NAME).exe" "builds/release/$(BIN_NAME).exe"
@@ -271,7 +271,7 @@ windows: builds/release
 	cp $(MSYS_ENV_PREFIX)/bin/*.dll "builds/release/" 2>/dev/null || true
 
 windows-debug: builds/debug
-	@echo "==> Building Windows Debug binary natively..."
+	@echo "==> Building Windows Debug binary..."
 	cmake -S . -B "build/win-debug" -DCMAKE_BUILD_TYPE=Debug
 	cmake --build "build/win-debug" --parallel
 	cp "build/win-debug/$(BIN_NAME).exe" "builds/debug/$(BIN_NAME).exe"
