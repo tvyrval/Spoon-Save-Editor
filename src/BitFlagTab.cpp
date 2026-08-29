@@ -1,6 +1,6 @@
 #include "EditorTabs.h"
 #include "EditorTabUtils.h"
-#include "save_data.h"
+#include "SaveManager.h"
 
 #include <QCheckBox>
 #include <QGroupBox>

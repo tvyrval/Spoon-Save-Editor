@@ -1,7 +1,7 @@
 #include "EditorTabs.h"
 #include "EditorTabUtils.h"
 #include "ItemData.h"
-#include "save_data.h"
+#include "SaveManager.h"
 
 #include <QComboBox>
 #include <QCheckBox>
@@ -65,9 +65,35 @@ WeaponTab::WeaponTab(QWidget* parent) : EditorTabBase(parent) {
 }
 
 void WeaponTab::refreshDisplay() {
-    etab::fillItemCombo(m_equipped, const_cast<const wchar_t**>(g_WeaponNames), g_WeaponCount, false, m_sortAlpha, m_showIDs);
     refreshAddPicker();
     refreshOwnedList();
+    refreshEquippedPicker();
+}
+
+void WeaponTab::refreshEquippedPicker() {
+    m_equipped->clear();
+    if (!m_data) return;
+    struct Row { QString display; int id; };
+    QVector<Row> rows;
+    for (int i = 0; i < 128; ++i) {
+        uint32_t id = m_data->ownedWeapons[i].id;
+        if (id == 0 || id == 0xFFFFFFFF) continue;
+        QString name = tr("Unknown Weapon");
+        for (int k = 0; k < g_WeaponCount; ++k)
+            if (weaponIdAt(k) == (int)id) { name = etab::w2q(g_WeaponNames[k]); break; }
+        Row r;
+        r.id = (int)id;
+        r.display = etab::itemDisplay(name, m_showIDs);
+        rows.append(r);
+    }
+    if (m_sortAlpha) {
+        std::sort(rows.begin(), rows.end(), [](const Row& a, const Row& b) {
+            return a.display.compare(b.display, Qt::CaseInsensitive) < 0;
+        });
+    }
+    for (const auto& r : rows)
+        m_equipped->addItem(r.display, QVariant(r.id));
+    etab::setComboById(m_equipped, m_data->currentWeapon);
 }
 
 void WeaponTab::refreshOwnedList() {
@@ -168,6 +194,7 @@ void WeaponTab::onAdd() {
     m_data->ownedWeapons[emptyIdx].flags = 1;
     refreshOwnedList();
     refreshAddPicker();
+    refreshEquippedPicker();
 }
 
 void WeaponTab::onDelete() {
@@ -182,6 +209,7 @@ void WeaponTab::onDelete() {
     }
     refreshOwnedList();
     refreshAddPicker();
+    refreshEquippedPicker();
     m_turf->clear();
     m_newFlag->setChecked(false);
 }

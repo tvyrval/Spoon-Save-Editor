@@ -1,7 +1,7 @@
 #include "EditorTabs.h"
 #include "EditorTabUtils.h"
 #include "ItemData.h"
-#include "save_data.h"
+#include "SaveManager.h"
 
 #include <QComboBox>
 #include <QCheckBox>
@@ -96,12 +96,36 @@ void GearSubTab::bind(SaveData* data, OwnedGearS1* array, const wchar_t** names,
 void GearSubTab::refreshDisplay(bool showIDs, bool sortAlpha) {
     m_showIDs = showIDs;
     m_sortAlpha = sortAlpha;
-    etab::fillItemCombo(m_equipped, m_names, m_count, false, m_sortAlpha, m_showIDs);
     etab::fillAbilityCombo(m_sub1, m_sortAlpha, m_showIDs);
     etab::fillAbilityCombo(m_sub2, m_sortAlpha, m_showIDs);
     etab::fillAbilityCombo(m_sub3, m_sortAlpha, m_showIDs);
     refreshList();
     refreshAddPicker();
+    refreshEquippedPicker();
+}
+
+void GearSubTab::refreshEquippedPicker() {
+    m_equipped->clear();
+    if (!m_data || !m_array) return;
+    struct Row { QString display; int id; };
+    QVector<Row> rows;
+    for (int i = 0; i < 256; ++i) {
+        uint32_t id = m_array[i].id;
+        if (id == 0xFFFFFFFF) continue;
+        Row r;
+        r.id = (int)id;
+        r.display = etab::itemDisplay(itemNameByID(m_names, m_count, id, m_showIDs), m_showIDs);
+        rows.append(r);
+    }
+    if (m_sortAlpha) {
+        std::sort(rows.begin(), rows.end(), [](const Row& a, const Row& b) {
+            return a.display.compare(b.display, Qt::CaseInsensitive) < 0;
+        });
+    } else {
+        std::sort(rows.begin(), rows.end(), [](const Row& a, const Row& b) { return a.id < b.id; });
+    }
+    for (const auto& r : rows)
+        m_equipped->addItem(r.display, QVariant(r.id));
     if (m_equippedField)
         etab::setComboById(m_equipped, (int32_t)(uint32_t)*m_equippedField);
 }
@@ -214,6 +238,7 @@ void GearSubTab::onAdd() {
     m_array[emptyIdx].newFlag = 1;
     refreshList();
     refreshAddPicker();
+    refreshEquippedPicker();
 }
 
 void GearSubTab::onDelete() {
@@ -227,6 +252,7 @@ void GearSubTab::onDelete() {
     }
     refreshList();
     refreshAddPicker();
+    refreshEquippedPicker();
 }
 
 GearTab::GearTab(QWidget* parent) : EditorTabBase(parent) {

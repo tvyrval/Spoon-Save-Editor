@@ -256,7 +256,7 @@ alpine-debug: builds/debug | $(COMP_DIR)
 	@rm -f $(COMP_DIR)/.tmp-alpine-dbg.sh
 
 # ==============================================================================
-# WINDOWS (Native MSYS2/CMake)
+# WINDOWS
 # ==============================================================================
 
 # Detect active MSYS2 environment directory dynamically (falls back to /mingw64)

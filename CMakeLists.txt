@@ -25,7 +25,6 @@ qt_add_executable(spoon_save_editor
     src/SaveManager.cpp
     src/ItemData.h
     src/ItemData.cpp
-    src/items.cpp
     src/EditorTabUtils.h
     src/EditorTabUtils.cpp
     src/EditorTabs.h
@@ -38,7 +37,6 @@ qt_add_executable(spoon_save_editor
     src/MinigameTab.cpp
     src/SpykeTab.cpp
     src/BitFlagTab.cpp
-    src/save_data.h
 )
 
 qt_add_resources(spoon_save_editor appicons

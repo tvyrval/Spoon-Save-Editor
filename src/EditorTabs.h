@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QList>
 #include <QVector>
-#include "save_data.h"
+#include "SaveManager.h"
 
 class QComboBox;
 class QListWidget;
@@ -47,6 +47,7 @@ private slots:
 private:
     void refreshOwnedList();
     void refreshAddPicker();
+    void refreshEquippedPicker();
     QComboBox* m_equipped;
     QListWidget* m_list;
     QLineEdit* m_turf;
@@ -73,6 +74,7 @@ private slots:
 private:
     void refreshList();
     void refreshAddPicker();
+    void refreshEquippedPicker();
     SaveData* m_data = nullptr;
     OwnedGearS1* m_array = nullptr;
     const wchar_t** m_names = nullptr;
