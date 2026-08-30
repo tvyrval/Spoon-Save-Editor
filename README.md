@@ -2,6 +2,9 @@
 
 Spoon Save Editor is a native Windows & Linux application designed for editing Splatoon 1 `save.dat` files. Built entirely using the Qt libraries and C++. It offers a lightweight and direct approach to modifying player data, inventory, game progression, and meta-flags.
 
+<img width="1040" height="746" alt="image" src="https://github.com/user-attachments/assets/352e64d5-8c0a-4e83-a74f-9c2464d65a6a" />
+
+
 ## Features
 
 *   **Player Editor**: Modify player statistics (Level, Rank, Money, Super Sea Snails), appearance (Gender, Skin Color, Eye Color), Splatfest data, and control settings.
