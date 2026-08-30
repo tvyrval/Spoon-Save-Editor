@@ -8,8 +8,8 @@ permissions:
   contents: write
 
 jobs:
-  build-linux-glibc:
-    name: Build Linux (glibc)
+  build-linux:
+    name: Build Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -82,9 +82,9 @@ jobs:
 
           curl -fsSL -o appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod +x appimagetool
-          ./appimagetool --appimage-extract-and-run "$APPDIR" SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64-glibc.AppImage
+          ./appimagetool --appimage-extract-and-run "$APPDIR" SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64.AppImage
 
-      - name: Upload glibc Asset
+      - name: Upload Linux Asset
         uses: softprops/action-gh-release@v2
         with:
           files: SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64.AppImage
@@ -140,18 +140,26 @@ jobs:
         with:
           version: '6.7.2'
 
+      - name: Strip Dead AGL Dependency
+        run: |
+          find $QT_ROOT_DIR -type f \( -name "*.cmake" -o -name "*.prl" \) -exec sed -i '' 's/-framework AGL//g' {} +
+
       - name: Compile and Package DMG
         run: |
+          # Build via CMake targeting both Apple Silicon and Intel
           cmake -S . -B "build/macos-release" -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
           cmake --build "build/macos-release" --parallel
           
+          # Use macdeployqt on the target .app bundle
           macdeployqt "build/macos-release/Spoon Save Editor.app"
           
+          # Setup DMG staging directory and Application symlink
           rm -rf "build/macos-release/dmg_staging"
           mkdir -p "build/macos-release/dmg_staging"
           cp -R "build/macos-release/Spoon Save Editor.app" "build/macos-release/dmg_staging/"
           ln -s /Applications "build/macos-release/dmg_staging/Applications"
           
+          # Package final DMG using hdiutil
           hdiutil create -volname "Spoon Save Editor" -srcfolder "build/macos-release/dmg_staging" -ov -format UDZO "SpoonSaveEditor-${{ github.event.release.tag_name }}-macos-universal.dmg"
 
       - name: Upload macOS Asset
