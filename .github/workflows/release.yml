@@ -92,35 +92,34 @@ jobs:
   build-linux-musl:
     name: Build Linux (musl)
     runs-on: ubuntu-latest
-    container: alpine:latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Build Dependencies
+      - name: Compile and Build AppDir (via Alpine)
         run: |
+          cat > build_alpine.sh <<'EOF'
+          set -ex
           apk update
-          apk add --no-cache build-base cmake qt6-qtbase-dev curl bash coreutils
-
-      - name: Compile and Package AppImage
-        run: |
+          apk add --no-cache build-base cmake qt6-qtbase-dev bash coreutils
+          
           cmake -S . -B build/alpine-release -DCMAKE_BUILD_TYPE=Release
           cmake --build build/alpine-release --parallel $(nproc)
           strip build/alpine-release/spoon_save_editor || true
-
+          
           APPDIR="AppDir"
           mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/lib" "$APPDIR/usr/plugins/platforms" \
                    "$APPDIR/usr/share/applications" "$APPDIR/usr/share/icons/hicolor/256x256/apps"
-
+          
           cp build/alpine-release/spoon_save_editor "$APPDIR/usr/bin/"
-
+          
           ldd "$APPDIR/usr/bin/spoon_save_editor" | awk '/=> \// {print $3} /^\// {print $1}' | sort -u | while read -r lib; do
               [ -n "$lib" ] || continue
               case "$lib" in */libc.so.*|*/ld-musl-*.so.*|*/libm.so.*|*/libpthread.so.*|*/libdl.so.*|*/librt.so.*|*/libz.so.*|*/libX*.so.*|*/libxcb*.so.*|*/libxkbcommon*.so.*|*/libfontconfig.so.*|*/libfreetype.so.*|*/libexpat.so.*|*/libharfbuzz.so.*|*/libglib-2.0.so.*|*/libgobject-2.0.so.*|*/libstdc++.so.*|*/libgcc_s.so.*|*/libGL*.so.*|*/libEGL*.so.*|*/libdrm.so.*|*/libwayland-*.so.*) continue ;; esac
               mkdir -p "$APPDIR$(dirname "$lib")"
               cp -L "$lib" "$APPDIR$lib"
           done
-
+          
           if [ -d /usr/lib/qt6/plugins/platforms ]; then
               cp /usr/lib/qt6/plugins/platforms/*.so "$APPDIR/usr/plugins/platforms/" 2>/dev/null || true
               for p in "$APPDIR"/usr/plugins/platforms/*.so; do
@@ -134,7 +133,7 @@ jobs:
                   done
               done
           fi
-
+          
           cat > "$APPDIR/usr/share/applications/spoon_save_editor.desktop" <<'DESK'
           [Desktop Entry]
           Type=Application
@@ -146,12 +145,12 @@ jobs:
           Terminal=false
           DESK
           chmod 644 "$APPDIR/usr/share/applications/spoon_save_editor.desktop"
-
+          
           cp images/icon.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" 2>/dev/null || true
           ln -sf "usr/share/applications/spoon_save_editor.desktop" "$APPDIR/spoon_save_editor.desktop"
           ln -sf "usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" "$APPDIR/spoon_save_editor.png"
           ln -sf "usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" "$APPDIR/.DirIcon"
-
+          
           cat > "$APPDIR/AppRun" <<'RUN'
           #!/bin/sh
           HERE="$(dirname "$(readlink -f "$0")")"
@@ -161,10 +160,17 @@ jobs:
           exec "$HERE/usr/bin/spoon_save_editor" "$@"
           RUN
           chmod 755 "$APPDIR/AppRun"
+          EOF
+          
+          chmod +x build_alpine.sh
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace alpine:latest ./build_alpine.sh
 
+      - name: Package AppImage (Native)
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl file
           curl -fsSL -o appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod +x appimagetool
-          ./appimagetool --appimage-extract-and-run "$APPDIR" SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64-musl.AppImage
+          ./appimagetool --appimage-extract-and-run AppDir SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64-musl.AppImage
 
       - name: Upload musl Asset
         uses: softprops/action-gh-release@v2
@@ -209,7 +215,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: SpoonSaveEditor-${{ github.event.release.tag_name }}-x64.zip
-          
+
   build-macos:
     name: Build macOS (Universal)
     runs-on: macos-latest
@@ -219,8 +225,6 @@ jobs:
 
       - name: Install Official Qt
         uses: jurplel/install-qt-action@v3
-        with:
-          version: '6.5.3'
 
       - name: Compile and Package DMG
         run: |
