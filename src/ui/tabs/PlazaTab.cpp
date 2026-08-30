@@ -63,9 +63,10 @@ PlazaTab::PlazaTab(QWidget* parent) : EditorTabBase(parent) {
 
 static QString inklingName(const PlazaInkling* ink) {
     QString s;
-    for (int i = 0; i < 8; ++i) {
-        if (ink->name[i] == 0) break;
-        s.append(QChar(static_cast<ushort>(ink->name[i])));
+    for (int i = 0; i < 16; ++i) {
+        uint16_t c = (static_cast<uint16_t>(ink->name[i]) >> 8) | (static_cast<uint16_t>(ink->name[i]) << 8);
+        if (c == 0) break;
+        s.append(QChar(c));
     }
     return s;
 }
@@ -111,8 +112,10 @@ void PlazaTab::saveInkling(int index) {
     if ((int32_t)(uint32_t)ink->status == -1) return;
 
     QString name = m_name->text();
-    for (int i = 0; i < 8; ++i)
-        ink->name[i] = (i < name.size()) ? static_cast<char16_t>(name[i].unicode()) : 0;
+    for (int i = 0; i < 16; ++i) {
+        uint16_t c = (i < name.size()) ? name[i].unicode() : 0;
+        ink->name[i] = static_cast<char16_t>((c >> 8) | (c << 8));
+    }
 
     int32_t v = m_level->text().toInt();
     if (v == -1) {

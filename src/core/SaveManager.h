@@ -31,9 +31,9 @@ struct le32_t {
 
 struct PlazaInkling {
     be32_t status;
-    uint8_t unk0[3];
-    char16_t name[8];
-    uint8_t unk1[29];
+    uint8_t unk0[2];
+    char16_t name[16];
+    uint8_t unk1[14];
     be32_t gender;
     be32_t skinColor;
     be32_t eyeColor;
