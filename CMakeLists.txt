@@ -59,4 +59,10 @@ target_link_libraries(spoon_save_editor PRIVATE
 
 target_compile_definitions(spoon_save_editor PRIVATE APP_VERSION=\"${PROJECT_VERSION}\")
 
+if(WIN32)
+    target_sources(spoon_save_editor PRIVATE resources.rc)
+    set_target_properties(spoon_save_editor PROPERTIES OUTPUT_NAME "Spoon Save Editor")
+    target_link_options(spoon_save_editor PRIVATE "$<$<CONFIG:Release>:-mwindows>")
+endif()
+
 install(TARGETS spoon_save_editor RUNTIME DESTINATION bin)

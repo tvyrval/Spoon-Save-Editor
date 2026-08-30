@@ -261,20 +261,41 @@ alpine-debug: builds/debug | $(COMP_DIR)
 
 # Detect active MSYS2 environment directory dynamically (falls back to /mingw64)
 MSYS_ENV_PREFIX := $(or $(MINGW_PREFIX),/mingw64)
+WIN_BIN_NAME := Spoon Save Editor
 
 windows: builds/release
 	@echo "==> Building Windows Release binary..."
 	cmake -S . -B "build/win-release" -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
 	cmake --build "build/win-release" --parallel
-	cp "build/win-release/$(BIN_NAME).exe" "builds/release/$(BIN_NAME).exe"
-	windeployqt "builds/release/$(BIN_NAME).exe"
-	cp $(MSYS_ENV_PREFIX)/bin/*.dll "builds/release/" 2>/dev/null || true
+	@echo "==> Gathering required files..."
+	rm -rf "builds/release/$(PROJECT)_windows"
+	mkdir -p "builds/release/$(PROJECT)_windows"
+	cp "build/win-release/$(WIN_BIN_NAME).exe" "builds/release/$(PROJECT)_windows/"
+	windeployqt "builds/release/$(PROJECT)_windows/$(WIN_BIN_NAME).exe"
+	@echo "==> Resolving specific MSYS2/MinGW DLL dependencies..."
+	ldd "builds/release/$(PROJECT)_windows/$(WIN_BIN_NAME).exe" | awk '/=> \// {print $$3} /^\// {print $$1}' | grep -i "$(MSYS_ENV_PREFIX)" | sort -u | xargs -I {} cp "{}" "builds/release/$(PROJECT)_windows/" 2>/dev/null || true
+	@echo "==> Creating ZIP archive..."
+	cd "builds/release/$(PROJECT)_windows" && zip -r "../$(PROJECT)-windows-release.zip" .
+	@echo "==> Cleaning up temporary directory..."
+	rm -rf "builds/release/$(PROJECT)_windows"
+	@echo "==> Output saved to builds/release/$(PROJECT)-windows-release.zip"
 
 windows-debug: builds/debug
 	@echo "==> Building Windows Debug binary..."
-	cmake -S . -B "build/win-debug" -DCMAKE_BUILD_TYPE=Debug
+	cmake -S . -B "build/win-debug" -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Debug
 	cmake --build "build/win-debug" --parallel
-	cp "build/win-debug/$(BIN_NAME).exe" "builds/debug/$(BIN_NAME).exe"
+	@echo "==> Gathering required files..."
+	rm -rf "builds/debug/$(PROJECT)_windows_debug"
+	mkdir -p "builds/debug/$(PROJECT)_windows_debug"
+	cp "build/win-debug/$(WIN_BIN_NAME).exe" "builds/debug/$(PROJECT)_windows_debug/"
+	windeployqt --debug "builds/debug/$(PROJECT)_windows_debug/$(WIN_BIN_NAME).exe"
+	@echo "==> Resolving specific MSYS2/MinGW DLL dependencies..."
+	ldd "builds/debug/$(PROJECT)_windows_debug/$(WIN_BIN_NAME).exe" | awk '/=> \// {print $$3} /^\// {print $$1}' | grep -i "$(MSYS_ENV_PREFIX)" | sort -u | xargs -I {} cp "{}" "builds/debug/$(PROJECT)_windows_debug/" 2>/dev/null || true
+	@echo "==> Creating ZIP archive..."
+	cd "builds/debug/$(PROJECT)_windows_debug" && zip -r "../$(PROJECT)-windows-debug.zip" .
+	@echo "==> Cleaning up temporary directory..."
+	rm -rf "builds/debug/$(PROJECT)_windows_debug"
+	@echo "==> Output saved to builds/debug/$(PROJECT)-windows-debug.zip"
 
 # ==============================================================================
 # CLEAN
