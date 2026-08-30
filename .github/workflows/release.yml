@@ -1,0 +1,210 @@
+name: Release Builds
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux-glibc:
+    name: Build Linux (glibc)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake qt6-base-dev qt6-base-private-dev file libgl1-mesa-dev curl
+
+      - name: Compile and Package AppImage
+        run: |
+          cmake -S . -B build/linux-release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+          cmake --build build/linux-release --parallel $(nproc)
+          strip build/linux-release/spoon_save_editor || true
+
+          APPDIR="AppDir"
+          mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/lib" "$APPDIR/usr/plugins/platforms" \
+                   "$APPDIR/usr/share/applications" "$APPDIR/usr/share/icons/hicolor/256x256/apps"
+
+          cp build/linux-release/spoon_save_editor "$APPDIR/usr/bin/"
+
+          ldd "$APPDIR/usr/bin/spoon_save_editor" | awk '/=> \// {print $3} /^\// {print $1}' | sort -u | while read -r lib; do
+              [ -n "$lib" ] || continue
+              case "$lib" in */libc.so.*|*/libm.so.*|*/libpthread.so.*|*/libdl.so.*|*/librt.so.*|*/ld-linux-*.so.*|*/libresolv.so.*|*/libz.so.*|*/libX*.so.*|*/libxcb*.so.*|*/libxkbcommon*.so.*|*/libfontconfig.so.*|*/libfreetype.so.*|*/libexpat.so.*|*/libharfbuzz.so.*|*/libglib-2.0.so.*|*/libgobject-2.0.so.*|*/libstdc++.so.*|*/libgcc_s.so.*|*/libGL*.so.*|*/libEGL*.so.*|*/libdrm.so.*|*/libwayland-*.so.*) continue ;; esac
+              mkdir -p "$APPDIR$(dirname "$lib")"
+              cp -L "$lib" "$APPDIR$lib"
+          done
+
+          if [ -d /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms ]; then
+              cp /usr/lib/x86_64-linux-gnu/qt6/plugins/platforms/*.so "$APPDIR/usr/plugins/platforms/" 2>/dev/null || true
+              for p in "$APPDIR"/usr/plugins/platforms/*.so; do
+                  [ -f "$p" ] || continue
+                  ldd "$p" 2>/dev/null | awk '/=> \// {print $3} /^\// {print $1}' | sort -u | while read -r lib; do
+                      [ -n "$lib" ] || continue
+                      [ -f "$APPDIR$lib" ] && continue
+                      case "$lib" in */libc.so.*|*/libm.so.*|*/libpthread.so.*|*/libdl.so.*|*/librt.so.*|*/ld-linux-*.so.*|*/libresolv.so.*|*/libz.so.*|*/libX*.so.*|*/libxcb*.so.*|*/libxkbcommon*.so.*|*/libfontconfig.so.*|*/libfreetype.so.*|*/libexpat.so.*|*/libharfbuzz.so.*|*/libglib-2.0.so.*|*/libgobject-2.0.so.*|*/libstdc++.so.*|*/libgcc_s.so.*|*/libGL*.so.*|*/libEGL*.so.*|*/libdrm.so.*|*/libwayland-*.so.*) continue ;; esac
+                      mkdir -p "$APPDIR$(dirname "$lib")"
+                      cp -L "$lib" "$APPDIR$lib" 2>/dev/null || true
+                  done
+              done
+          fi
+
+          cat > "$APPDIR/usr/share/applications/spoon_save_editor.desktop" <<'DESK'
+          [Desktop Entry]
+          Type=Application
+          Name=Spoon Save Editor
+          Comment=Save file editor for Splatoon on the Wii U
+          Exec=spoon_save_editor
+          Icon=spoon_save_editor
+          Categories=Game;Utility;
+          Terminal=false
+          DESK
+          chmod 644 "$APPDIR/usr/share/applications/spoon_save_editor.desktop"
+
+          cp images/icon.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" 2>/dev/null || true
+          ln -sf "usr/share/applications/spoon_save_editor.desktop" "$APPDIR/spoon_save_editor.desktop"
+          ln -sf "usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" "$APPDIR/spoon_save_editor.png"
+          ln -sf "usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" "$APPDIR/.DirIcon"
+
+          cat > "$APPDIR/AppRun" <<'RUN'
+          #!/bin/sh
+          HERE="$(dirname "$(readlink -f "$0")")"
+          export LD_LIBRARY_PATH="$HERE/usr/lib:$HERE/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          export QT_PLUGIN_PATH="$HERE/usr/plugins"
+          export QT_QPA_PLATFORM_PLUGIN_PATH="$HERE/usr/plugins/platforms"
+          exec "$HERE/usr/bin/spoon_save_editor" "$@"
+          RUN
+          chmod 755 "$APPDIR/AppRun"
+
+          curl -fsSL -o appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+          ./appimagetool --appimage-extract-and-run "$APPDIR" SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64-glibc.AppImage
+
+      - name: Upload glibc Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64-glibc.AppImage
+
+  build-linux-musl:
+    name: Build Linux (musl)
+    runs-on: alpine
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Build Dependencies
+        run: |
+          apk update
+          apk add --no-cache build-base cmake qt6-qtbase-dev curl bash coreutils
+
+      - name: Compile and Package AppImage
+        run: |
+          cmake -S . -B build/alpine-release -DCMAKE_BUILD_TYPE=Release
+          cmake --build build/alpine-release --parallel $(nproc)
+          strip build/alpine-release/spoon_save_editor || true
+
+          APPDIR="AppDir"
+          mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/lib" "$APPDIR/usr/plugins/platforms" \
+                   "$APPDIR/usr/share/applications" "$APPDIR/usr/share/icons/hicolor/256x256/apps"
+
+          cp build/alpine-release/spoon_save_editor "$APPDIR/usr/bin/"
+
+          ldd "$APPDIR/usr/bin/spoon_save_editor" | awk '/=> \// {print $3} /^\// {print $1}' | sort -u | while read -r lib; do
+              [ -n "$lib" ] || continue
+              case "$lib" in */libc.so.*|*/ld-musl-*.so.*|*/libm.so.*|*/libpthread.so.*|*/libdl.so.*|*/librt.so.*|*/libz.so.*|*/libX*.so.*|*/libxcb*.so.*|*/libxkbcommon*.so.*|*/libfontconfig.so.*|*/libfreetype.so.*|*/libexpat.so.*|*/libharfbuzz.so.*|*/libglib-2.0.so.*|*/libgobject-2.0.so.*|*/libstdc++.so.*|*/libgcc_s.so.*|*/libGL*.so.*|*/libEGL*.so.*|*/libdrm.so.*|*/libwayland-*.so.*) continue ;; esac
+              mkdir -p "$APPDIR$(dirname "$lib")"
+              cp -L "$lib" "$APPDIR$lib"
+          done
+
+          if [ -d /usr/lib/qt6/plugins/platforms ]; then
+              cp /usr/lib/qt6/plugins/platforms/*.so "$APPDIR/usr/plugins/platforms/" 2>/dev/null || true
+              for p in "$APPDIR"/usr/plugins/platforms/*.so; do
+                  [ -f "$p" ] || continue
+                  ldd "$p" 2>/dev/null | awk '/=> \// {print $3} /^\// {print $1}' | sort -u | while read -r lib; do
+                      [ -n "$lib" ] || continue
+                      [ -f "$APPDIR$lib" ] && continue
+                      case "$lib" in */libc.so.*|*/ld-musl-*.so.*|*/libm.so.*|*/libpthread.so.*|*/libdl.so.*|*/librt.so.*|*/libz.so.*|*/libX*.so.*|*/libxcb*.so.*|*/libxkbcommon*.so.*|*/libfontconfig.so.*|*/libfreetype.so.*|*/libexpat.so.*|*/libharfbuzz.so.*|*/libglib-2.0.so.*|*/libgobject-2.0.so.*|*/libstdc++.so.*|*/libgcc_s.so.*|*/libGL*.so.*|*/libEGL*.so.*|*/libdrm.so.*|*/libwayland-*.so.*) continue ;; esac
+                      mkdir -p "$APPDIR$(dirname "$lib")"
+                      cp -L "$lib" "$APPDIR$lib" 2>/dev/null || true
+                  done
+              done
+          fi
+
+          cat > "$APPDIR/usr/share/applications/spoon_save_editor.desktop" <<'DESK'
+          [Desktop Entry]
+          Type=Application
+          Name=Spoon Save Editor
+          Comment=Save File Editor for Splatoon on the Wii U
+          Exec=spoon_save_editor
+          Icon=spoon_save_editor
+          Categories=Game;Utility;
+          Terminal=false
+          DESK
+          chmod 644 "$APPDIR/usr/share/applications/spoon_save_editor.desktop"
+
+          cp images/icon.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" 2>/dev/null || true
+          ln -sf "usr/share/applications/spoon_save_editor.desktop" "$APPDIR/spoon_save_editor.desktop"
+          ln -sf "usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" "$APPDIR/spoon_save_editor.png"
+          ln -sf "usr/share/icons/hicolor/256x256/apps/spoon_save_editor.png" "$APPDIR/.DirIcon"
+
+          cat > "$APPDIR/AppRun" <<'RUN'
+          #!/bin/sh
+          HERE="$(dirname "$(readlink -f "$0")")"
+          export LD_LIBRARY_PATH="$HERE/usr/lib:$HERE/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          export QT_PLUGIN_PATH="$HERE/usr/plugins"
+          export QT_QPA_PLATFORM_PLUGIN_PATH="$HERE/usr/plugins/platforms"
+          exec "$HERE/usr/bin/spoon_save_editor" "$@"
+          RUN
+          chmod 755 "$APPDIR/AppRun"
+
+          curl -fsSL -o appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+          ./appimagetool --appimage-extract-and-run "$APPDIR" SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64-musl.AppImage
+
+      - name: Upload musl Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: SpoonSaveEditor-${{ github.event.release.tag_name }}-amd64-musl.AppImage
+
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-qt6-base
+            make
+            zip
+
+      - name: Compile and Package Zip
+        shell: msys2 {0}
+        run: |
+          cmake -S . -B "build/win-release" -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+          cmake --build "build/win-release" --parallel
+
+          mkdir -p "SpoonSaveEditor_windows"
+          cp "build/win-release/Spoon Save Editor.exe" "SpoonSaveEditor_windows/"
+          windeployqt "SpoonSaveEditor_windows/Spoon Save Editor.exe"
+
+          ldd "SpoonSaveEditor_windows/Spoon Save Editor.exe" | awk '/=> \// {print $3} /^\// {print $1}' | grep -i "/mingw64" | sort -u | xargs -I {} cp "{}" "SpoonSaveEditor_windows/" 2>/dev/null || true
+
+          cd SpoonSaveEditor_windows
+          zip -r "../SpoonSaveEditor-${{ github.event.release.tag_name }}-x64.zip" .
+
+      - name: Upload Windows Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: SpoonSaveEditor-${{ github.event.release.tag_name }}-x64.zip
