@@ -1,6 +1,63 @@
-#include "utils.h"
+#include "SaveManager.h"
 
-uint32_t CalculateCRC32(const uint8_t* data, size_t length) {
+#include <fstream>
+
+bool SaveManager::loadFile(const std::string& path) {
+    std::ifstream f(path, std::ios::binary);
+    if (!f) return false;
+    f.seekg(0, std::ios::end);
+    std::streamoff end = f.tellg();
+    if (end < 0) return false;
+    size_t sz = static_cast<size_t>(end);
+    if (sz != sizeof(SaveData) && sz != kLegacySaveSize) return false;
+    f.seekg(0, std::ios::beg);
+    m_buffer.assign(sizeof(SaveData), 0);
+    f.read(reinterpret_cast<char*>(m_buffer.data()), static_cast<std::streamsize>(sz));
+    if (!f) return false;
+    m_originalSize = sz;
+    m_currentPath = path;
+    return true;
+}
+
+bool SaveManager::saveFile(const std::string& path) {
+    if (m_buffer.empty()) return false;
+    updateChecksum();
+    size_t ws = writeSize();
+    std::ofstream f(path, std::ios::binary);
+    if (!f) return false;
+    f.write(reinterpret_cast<const char*>(m_buffer.data()), static_cast<std::streamsize>(ws));
+    return f.good();
+}
+
+SaveData* SaveManager::data() {
+    if (m_buffer.size() == sizeof(SaveData))
+        return reinterpret_cast<SaveData*>(m_buffer.data());
+    return nullptr;
+}
+
+const SaveData* SaveManager::data() const {
+    if (m_buffer.size() == sizeof(SaveData))
+        return reinterpret_cast<const SaveData*>(m_buffer.data());
+    return nullptr;
+}
+
+void SaveManager::updateChecksum() {
+    SaveData* d = data();
+    if (!d) return;
+    size_t ws = writeSize();
+    uint32_t crc = calculateCRC32(m_buffer.data() + 16, ws - 16);
+    d->checksum = crc;
+}
+
+bool SaveManager::verifyChecksum() const {
+    const SaveData* d = data();
+    if (!d) return false;
+    size_t ws = writeSize();
+    uint32_t crc = calculateCRC32(m_buffer.data() + 16, ws - 16);
+    return d->checksum == crc;
+}
+
+uint32_t SaveManager::calculateCRC32(const uint8_t* data, size_t length) {
     static const uint32_t table[256] = {
         0U, 1996959894U, 3993919788U, 2567524794U, 124634137U, 1886057615U,
         3915621685U, 2657392035U, 249268274U, 2044508324U, 3772115230U, 2547177864U,

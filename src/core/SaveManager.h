@@ -1,4 +1,15 @@
 #pragma once
+
+#include <cstdint>
+#include <cstddef>
+#include <string>
+#include <vector>
+
+#ifndef _MSC_VER
+#define _byteswap_ulong __builtin_bswap32
+#endif
+
+#pragma once
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -20,9 +31,9 @@ struct le32_t {
 
 struct PlazaInkling {
     be32_t status;
-    uint8_t unk0[3];
-    char16_t name[8];
-    uint8_t unk1[29];
+    uint8_t unk0[2];
+    char16_t name[16];
+    uint8_t unk1[14];
     be32_t gender;
     be32_t skinColor;
     be32_t eyeColor;
@@ -171,16 +182,54 @@ struct SaveData {
     be32_t splatfestTeamID;
     be32_t splatfestPower;
     be32_t splatfestRank;
-    be32_t splatfestXP; 
-    uint8_t padding1[46100 - 0xB2F4]; 
-    PlazaInkling plazaInklings[25];  
+    be32_t splatfestXP;
+    uint8_t padding1[46100 - 0xB2F4];
+    PlazaInkling plazaInklings[25];
     uint8_t unk_before_amiibo[52292 - 52000];
     be32_t girlChallenges[20];   // 0xCC44
     uint8_t girl_pad[4];
     be32_t boyChallenges[20];    // 0xCC98
     uint8_t boy_pad[4];
     be32_t squidChallenges[20];  // 0xCCEC
-    uint8_t final_pad[53888 - 52540]; 
+    uint8_t final_pad[53888 - 52540];
 };
 
 #pragma pack(pop)
+
+#if !defined(_MSC_VER) && !defined(_byteswap_ulong)
+inline uint32_t _byteswap_ulong(uint32_t v) {
+    return ((v >> 24) & 0x000000FFu) |
+           ((v >> 8)  & 0x0000FF00u) |
+           ((v << 8)  & 0x00FF0000u) |
+           ((v << 24) & 0xFF000000u);
+}
+#endif
+
+class SaveManager {
+public:
+    static constexpr size_t kSaveSize = sizeof(SaveData);
+    static constexpr size_t kLegacySaveSize = 52292;
+
+    bool loadFile(const std::string& path);
+    bool saveFile(const std::string& path);
+
+    bool hasData() const { return !m_buffer.empty(); }
+    size_t originalSize() const { return m_originalSize; }
+    size_t bufferSize() const { return m_buffer.size(); }
+    const std::string& currentPath() const { return m_currentPath; }
+    const std::vector<uint8_t>& buffer() const { return m_buffer; }
+
+    SaveData* data();
+    const SaveData* data() const;
+
+    static uint32_t calculateCRC32(const uint8_t* data, size_t length);
+    void updateChecksum();
+    bool verifyChecksum() const;
+
+private:
+    std::vector<uint8_t> m_buffer;
+    size_t m_originalSize = 0;
+    std::string m_currentPath;
+
+    size_t writeSize() const { return m_originalSize > 0 ? m_originalSize : sizeof(SaveData); }
+};
