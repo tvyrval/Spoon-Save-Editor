@@ -91,7 +91,8 @@ jobs:
 
   build-linux-musl:
     name: Build Linux (musl)
-    runs-on: alpine
+    runs-on: ubuntu-latest
+    container: alpine:latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

@@ -298,6 +298,28 @@ windows-debug: builds/debug
 	@echo "==> Output saved to builds/debug/$(PROJECT)-windows-debug.zip"
 
 # ==============================================================================
+# MACOS
+# ==============================================================================
+macos: builds/release
+	@echo "==> Building macOS Release app..."
+	cmake -S . -B "build/macos-release" -DCMAKE_BUILD_TYPE=Release
+	cmake --build "build/macos-release" --parallel
+	@echo "==> Bundling dependencies and creating DMG..."
+	macdeployqt "build/macos-release/spoon_save_editor.app" -dmg
+	mv "build/macos-release/spoon_save_editor.dmg" "builds/release/$(PROJECT)-macos-release.dmg"
+	@echo "==> Output saved to builds/release/$(PROJECT)-macos-release.dmg"
+
+macos-debug: builds/debug
+	@echo "==> Building macOS Debug app..."
+	cmake -S . -B "build/macos-debug" -DCMAKE_BUILD_TYPE=Debug
+	cmake --build "build/macos-debug" --parallel
+	@echo "==> Bundling dependencies..."
+	macdeployqt "build/macos-debug/spoon_save_editor.app"
+	rm -rf "builds/debug/spoon_save_editor.app"
+	cp -R "build/macos-debug/spoon_save_editor.app" "builds/debug/"
+	@echo "==> Output saved to builds/debug/spoon_save_editor.app"
+
+# ==============================================================================
 # CLEAN
 # ==============================================================================
 clean:
