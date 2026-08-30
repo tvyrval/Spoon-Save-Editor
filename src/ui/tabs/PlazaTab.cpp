@@ -43,7 +43,7 @@ PlazaTab::PlazaTab(QWidget* parent) : EditorTabBase(parent) {
     df->addRow(tr("Eye Color:"), m_eye);
     root->addWidget(detailBox);
 
-    auto* equipBox = new QGroupBox(tr("Equipped Layout"), this);
+    auto* equipBox = new QGroupBox(tr("Equipped Gear"), this);
     auto* ef = new QFormLayout(equipBox);
     m_head = new QComboBox;
     m_cloth = new QComboBox;
