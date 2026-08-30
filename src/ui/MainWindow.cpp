@@ -20,6 +20,10 @@ MainWindow::MainWindow(QWidget* parent)
       m_save(new SaveManager()) {
     setWindowIcon(QIcon(":/images/icon.png"));
     setMinimumSize(860, 540);
+          
+#ifdef Q_OS_MAC
+          m_tabs->setDocumentMode(true);
+#endif
 
     createMenus();
     createTabs();

@@ -304,9 +304,17 @@ macos: builds/release
 	@echo "==> Building macOS Release app..."
 	cmake -S . -B "build/macos-release" -DCMAKE_BUILD_TYPE=Release
 	cmake --build "build/macos-release" --parallel
-	@echo "==> Bundling dependencies and creating DMG..."
-	macdeployqt "build/macos-release/spoon_save_editor.app" -dmg
-	mv "build/macos-release/spoon_save_editor.dmg" "builds/release/$(PROJECT)-macos-release.dmg"
+	@echo "==> Bundling dependencies..."
+	macdeployqt "build/macos-release/Spoon Save Editor.app"
+	@echo "==> Creating DMG staging area..."
+	rm -rf "build/macos-release/dmg_staging"
+	mkdir -p "build/macos-release/dmg_staging"
+	cp -R "build/macos-release/Spoon Save Editor.app" "build/macos-release/dmg_staging/"
+	ln -s /Applications "build/macos-release/dmg_staging/Applications"
+	@echo "==> Generating DMG..."
+	hdiutil create -volname "Spoon Save Editor" -srcfolder "build/macos-release/dmg_staging" -ov -format UDZO "builds/release/$(PROJECT)-macos-release.dmg"
+	@echo "==> Cleaning up staging..."
+	rm -rf "build/macos-release/dmg_staging"
 	@echo "==> Output saved to builds/release/$(PROJECT)-macos-release.dmg"
 
 macos-debug: builds/debug
@@ -314,10 +322,10 @@ macos-debug: builds/debug
 	cmake -S . -B "build/macos-debug" -DCMAKE_BUILD_TYPE=Debug
 	cmake --build "build/macos-debug" --parallel
 	@echo "==> Bundling dependencies..."
-	macdeployqt "build/macos-debug/spoon_save_editor.app"
-	rm -rf "builds/debug/spoon_save_editor.app"
-	cp -R "build/macos-debug/spoon_save_editor.app" "builds/debug/"
-	@echo "==> Output saved to builds/debug/spoon_save_editor.app"
+	macdeployqt "build/macos-debug/Spoon Save Editor.app"
+	rm -rf "builds/debug/Spoon Save Editor.app"
+	cp -R "build/macos-debug/Spoon Save Editor.app" "builds/debug/"
+	@echo "==> Output saved to builds/debug/Spoon Save Editor.app"
 
 # ==============================================================================
 # CLEAN

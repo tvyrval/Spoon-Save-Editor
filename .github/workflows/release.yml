@@ -209,3 +209,34 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: SpoonSaveEditor-${{ github.event.release.tag_name }}-x64.zip
+          
+  build-macos:
+    name: Build macOS (Universal)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Official Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.5.3'
+
+      - name: Compile and Package DMG
+        run: |
+          cmake -S . -B "build/macos-release" -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+          cmake --build "build/macos-release" --parallel
+          
+          macdeployqt "build/macos-release/Spoon Save Editor.app"
+          
+          rm -rf "build/macos-release/dmg_staging"
+          mkdir -p "build/macos-release/dmg_staging"
+          cp -R "build/macos-release/Spoon Save Editor.app" "build/macos-release/dmg_staging/"
+          ln -s /Applications "build/macos-release/dmg_staging/Applications"
+          
+          hdiutil create -volname "Spoon Save Editor" -srcfolder "build/macos-release/dmg_staging" -ov -format UDZO "SpoonSaveEditor-${{ github.event.release.tag_name }}-macos-universal.dmg"
+
+      - name: Upload macOS Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: SpoonSaveEditor-${{ github.event.release.tag_name }}-macos-universal.dmg

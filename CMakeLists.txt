@@ -65,4 +65,21 @@ if(WIN32)
     target_link_options(spoon_save_editor PRIVATE "$<$<CONFIG:Release>:-mwindows>")
 endif()
 
-install(TARGETS spoon_save_editor RUNTIME DESTINATION bin)
+if(APPLE)
+    set(MACOSX_ICON "images/icon.icns")
+    target_sources(spoon_save_editor PRIVATE ${MACOSX_ICON})
+    set_source_files_properties(${MACOSX_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    
+    set_target_properties(spoon_save_editor PROPERTIES
+        MACOSX_BUNDLE TRUE
+        OUTPUT_NAME "Spoon Save Editor"
+        MACOSX_BUNDLE_BUNDLE_NAME "Spoon Save Editor"
+        MACOSX_BUNDLE_ICON_FILE "icon.icns"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.tvyrval.spoonsaveeditor"
+    )
+endif()
+
+install(TARGETS spoon_save_editor
+    RUNTIME DESTINATION bin
+    BUNDLE DESTINATION .
+)
