@@ -44,6 +44,7 @@ Preferences can be adjusted directly via the **Settings** menu:
 
 * **Main Developer**: [@tvyrval](https://github.com/tvyrval) / vyrval
 * **UI Developer**: [@JerrySM64](https://github.com/JerrySM64)
+* **Contributor**: [Winterberry](https://github.com/c8ff)
 
 ## License
 
