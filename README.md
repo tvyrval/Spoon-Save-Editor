@@ -1,6 +1,6 @@
 # Spoon Save Editor
 
-Spoon Save Editor is a native Windows & Linux application designed for editing Splatoon 1 `save.dat` files. Built entirely using the Qt libraries and C++. It offers a lightweight and direct approach to modifying player data, inventory, game progression, and meta-flags.
+Spoon Save Editor is an application designed for editing Splatoon 1 `save.dat` files. Built entirely using the Qt libraries and C++. It offers a lightweight and direct approach to modifying player data, inventory, game progression, and meta-flags.
 
 <img width="1040" height="746" alt="image" src="https://github.com/user-attachments/assets/352e64d5-8c0a-4e83-a74f-9c2464d65a6a" />
 
@@ -19,7 +19,7 @@ Spoon Save Editor is a native Windows & Linux application designed for editing S
 
 ## System Requirements
 
-*   **Operating System**: Windows or Linux
+*   **Operating System**: Windows, macOS or Linux
 *   **Save File**: A valid Splatoon 1 save file (`.dat` format).
 
 ## Usage
@@ -27,6 +27,7 @@ Spoon Save Editor is a native Windows & Linux application designed for editing S
 1.  **Launch the Application**:
     *   **Windows**: Run `Spoon Save Editor.exe`.
     *   **Linux**: Make the `.AppImage` executable (`chmod +x Spoon_Save_Editor.AppImage`) and run it.
+    *   **macOS**: When you run the application for the first time, you will get notified that macOS can't verify the application. This is because it isn't signed with a paid developer account. To use it, go to System Settings > Security & Privacy, scroll to the bottom and click Open Anyway.
 2.  Click **Open File** and navigate to your Splatoon save file.
 3.  Select your save file to load the data into the editor.
 4.  Navigate through the tabs to modify your desired parameters.
