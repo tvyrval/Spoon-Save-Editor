@@ -9,6 +9,7 @@ class QComboBox;
 class QListWidget;
 class QCheckBox;
 class QLineEdit;
+class QLabel;
 class QPushButton;
 class QTabWidget;
 class QListWidgetItem;
@@ -199,7 +200,7 @@ private:
     QComboBox* m_gender;
     QComboBox* m_skin;
     QComboBox* m_eye;
-    QLineEdit* m_pid;
+    QLabel* m_pid;
     QComboBox* m_head;
     QComboBox* m_cloth;
     QComboBox* m_shoe;

@@ -34,8 +34,8 @@ PlazaTab::PlazaTab(QWidget* parent) : EditorTabBase(parent) {
     m_gender = new QComboBox;
     m_skin = new QComboBox;
     m_eye = new QComboBox;
-    m_pid = new QLineEdit;
-    m_pid->setReadOnly(true);
+    m_pid = new QLabel;
+    m_pid->setTextInteractionFlags(Qt::TextSelectableByMouse);
     df->addRow(tr("Name:"), m_name);
     df->addRow(tr("Level:"), m_level);
     df->addRow(tr("Rank:"), m_rank);
