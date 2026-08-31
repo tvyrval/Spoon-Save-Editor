@@ -83,7 +83,7 @@ void fillPlazaGearCombo(QComboBox* cb, const wchar_t** items, int count,
                         bool sortAlpha, bool showIDs) {
     cb->clear();
     QVector<ComboEntry> list;
-    buildList(items, count, false, sortAlpha, showIDs, list);
+    buildList(items, count, true, sortAlpha, showIDs, list);
     for (const auto& e : list)
         cb->addItem(e.display, QVariant(e.id));
 }
