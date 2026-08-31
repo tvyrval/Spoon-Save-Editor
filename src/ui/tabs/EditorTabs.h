@@ -199,6 +199,7 @@ private:
     QComboBox* m_gender;
     QComboBox* m_skin;
     QComboBox* m_eye;
+    QLineEdit* m_pid;
     QComboBox* m_head;
     QComboBox* m_cloth;
     QComboBox* m_shoe;

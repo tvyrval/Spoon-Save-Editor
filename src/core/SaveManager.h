@@ -48,7 +48,9 @@ struct PlazaInkling {
     uint8_t unk5[28];
     be32_t level;
     be32_t rank;
-    uint8_t unk6[40];
+    uint8_t unk6[16];
+    be32_t pid;
+    uint8_t unk7[20];
     be32_t colorR;
     be32_t colorG;
     be32_t colorB;

@@ -34,6 +34,8 @@ PlazaTab::PlazaTab(QWidget* parent) : EditorTabBase(parent) {
     m_gender = new QComboBox;
     m_skin = new QComboBox;
     m_eye = new QComboBox;
+    m_pid = new QLineEdit;
+    m_pid->setReadOnly(true);
     df->addRow(tr("Name:"), m_name);
     df->addRow(tr("Level:"), m_level);
     df->addRow(tr("Rank:"), m_rank);
@@ -41,6 +43,7 @@ PlazaTab::PlazaTab(QWidget* parent) : EditorTabBase(parent) {
     df->addRow(tr("Gender:"), m_gender);
     df->addRow(tr("Skin Color:"), m_skin);
     df->addRow(tr("Eye Color:"), m_eye);
+    df->addRow(tr("PID:"), m_pid);
     root->addWidget(detailBox);
 
     auto* equipBox = new QGroupBox(tr("Equipped Gear"), this);
@@ -83,6 +86,7 @@ void PlazaTab::loadInkling(int index) {
         etab::setComboById(m_gender, 0);
         etab::setComboById(m_skin, 0);
         etab::setComboById(m_eye, 0);
+        m_pid->setText(QStringLiteral("0"));
         etab::setComboById(m_head, 0);
         etab::setComboById(m_cloth, 0);
         etab::setComboById(m_shoe, 0);
@@ -100,6 +104,7 @@ void PlazaTab::loadInkling(int index) {
     etab::setComboById(m_gender, (int32_t)(uint32_t)ink->gender);
     etab::setComboById(m_skin, (int32_t)(uint32_t)ink->skinColor);
     etab::setComboById(m_eye, (int32_t)(uint32_t)ink->eyeColor);
+    m_pid->setText(QString::number((uint32_t)ink->pid));
     etab::setComboById(m_head, (int32_t)(uint32_t)ink->headGear);
     etab::setComboById(m_cloth, (int32_t)(uint32_t)ink->clothGear);
     etab::setComboById(m_shoe, (int32_t)(uint32_t)ink->shoeGear);
