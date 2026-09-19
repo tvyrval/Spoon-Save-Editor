@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QIcon>
+#include <QKeySequence>
 #include <QMenuBar>
 #include <QMenu>
 #include <QMessageBox>
@@ -53,7 +54,7 @@ void MainWindow::createTabs() {
         new MinigameTab(this),
         new SpykeTab(this),
         new BitFlagTab(this),
-        new InfoTab(this),
+        new StatsTab(this),
     };
     for (EditorTabBase* tab : m_editorTabs) {
         tab->setShowInternalIDs(m_actShowIDs ? m_actShowIDs->isChecked() : false);
@@ -67,7 +68,7 @@ void MainWindow::createTabs() {
     m_tabs->addTab(m_editorTabs[6], tr("Minigames"));
     m_tabs->addTab(m_editorTabs[7], tr("Spyke Orders"));
     m_tabs->addTab(m_editorTabs[8], tr("BitFlags"));
-    m_tabs->addTab(m_editorTabs[9], tr("Info"));
+    m_tabs->addTab(m_editorTabs[9], tr("Stats"));
 }
 
 void MainWindow::applyTabsDisplay() {
@@ -88,6 +89,17 @@ void MainWindow::createMenus() {
     m_actSaveAs = fileMenu->addAction(tr("&Save As..."));
     fileMenu->addSeparator();
     m_actExit = fileMenu->addAction(tr("E&xit"));
+#ifdef Q_OS_MAC
+    m_actOpen->setShortcut(QKeySequence("Cmd+O"));
+    m_actSave->setShortcut(QKeySequence("Cmd+S"));
+    m_actSaveAs->setShortcut(QKeySequence("Cmd+Shift+S"));
+    m_actExit->setShortcut(QKeySequence("Cmd+Q"));
+#else
+    m_actOpen->setShortcut(QKeySequence("Ctrl+O"));
+    m_actSave->setShortcut(QKeySequence("Ctrl+S"));
+    m_actSaveAs->setShortcut(QKeySequence("Ctrl+Shift+S"));
+    m_actExit->setShortcut(QKeySequence("Ctrl+Q"));
+#endif
 
     QMenu* settingsMenu = mb->addMenu(tr("&Settings"));
     m_actShowIDs = settingsMenu->addAction(tr("Show Internal IDs"));
