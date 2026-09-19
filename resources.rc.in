@@ -1,0 +1,36 @@
+#include <windows.h>
+
+IDI_ICON1 ICON "@CMAKE_CURRENT_SOURCE_DIR@/images/Spoon Save Editor.ico"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION     @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,@PROJECT_VERSION_PATCH@,0
+PRODUCTVERSION  @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,@PROJECT_VERSION_PATCH@,0
+FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+FILEFLAGS       VS_FF_DEBUG
+#else
+FILEFLAGS       0x0L
+#endif
+FILEOS          VOS_NT_WINDOWS32
+FILETYPE        VFT_APP
+FILESUBTYPE     VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName",      "t.vyrval\0"
+            VALUE "FileDescription",  "@PROJECT_DESCRIPTION@\0"
+            VALUE "FileVersion",      "@PROJECT_VERSION@\0"
+            VALUE "InternalName",     "Spoon Save Editor\0"
+            VALUE "LegalCopyright",   "Copyright (C) 2026 t.vyrval. All rights reserved.\0"
+            VALUE "OriginalFilename", "Spoon Save Editor.exe\0"
+            VALUE "ProductName",      "Spoon Save Editor\0"
+            VALUE "ProductVersion",   "@PROJECT_VERSION@\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END

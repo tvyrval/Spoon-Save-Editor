@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(SpoonSaveEditor
-    VERSION 1.0.0
+    VERSION 2.0.0
     DESCRIPTION "Splatoon Save File Editor"
     LANGUAGES CXX)
 
@@ -37,6 +37,7 @@ qt_add_executable(spoon_save_editor
     src/ui/tabs/MinigameTab.cpp
     src/ui/tabs/SpykeTab.cpp
     src/ui/tabs/BitFlagTab.cpp
+    src/ui/tabs/StatsTab.cpp
 )
 
 qt_add_resources(spoon_save_editor appicons
@@ -60,7 +61,8 @@ target_link_libraries(spoon_save_editor PRIVATE
 target_compile_definitions(spoon_save_editor PRIVATE APP_VERSION=\"${PROJECT_VERSION}\")
 
 if(WIN32)
-    target_sources(spoon_save_editor PRIVATE resources.rc)
+    configure_file(resources.rc.in ${CMAKE_CURRENT_BINARY_DIR}/resources.rc @ONLY)
+    target_sources(spoon_save_editor PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/resources.rc)
     set_target_properties(spoon_save_editor PROPERTIES OUTPUT_NAME "Spoon Save Editor")
     target_link_options(spoon_save_editor PRIVATE "$<$<CONFIG:Release>:-mwindows>")
 endif()

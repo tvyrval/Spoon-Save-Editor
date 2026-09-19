@@ -9,6 +9,7 @@ class QComboBox;
 class QListWidget;
 class QCheckBox;
 class QLineEdit;
+class QLabel;
 class QPushButton;
 class QTabWidget;
 class QListWidgetItem;
@@ -199,6 +200,7 @@ private:
     QComboBox* m_gender;
     QComboBox* m_skin;
     QComboBox* m_eye;
+    QLabel* m_pid;
     QComboBox* m_head;
     QComboBox* m_cloth;
     QComboBox* m_shoe;
@@ -273,4 +275,16 @@ public:
     void saveData(SaveData* data) override;
 private:
     QCheckBox* m_flags[14];
+};
+
+class StatsTab : public EditorTabBase {
+    Q_OBJECT
+public:
+    explicit StatsTab(QWidget* parent = nullptr);
+    void loadData(SaveData* data) override;
+    void saveData(SaveData* data) override;
+private:
+    QLabel* m_winSum;
+    QLabel* m_loseSum;
+    QLabel* m_totalMatches;
 };
