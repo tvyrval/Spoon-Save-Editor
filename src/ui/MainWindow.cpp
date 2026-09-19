@@ -53,6 +53,7 @@ void MainWindow::createTabs() {
         new MinigameTab(this),
         new SpykeTab(this),
         new BitFlagTab(this),
+        new InfoTab(this),
     };
     for (EditorTabBase* tab : m_editorTabs) {
         tab->setShowInternalIDs(m_actShowIDs ? m_actShowIDs->isChecked() : false);
@@ -66,6 +67,7 @@ void MainWindow::createTabs() {
     m_tabs->addTab(m_editorTabs[6], tr("Minigames"));
     m_tabs->addTab(m_editorTabs[7], tr("Spyke Orders"));
     m_tabs->addTab(m_editorTabs[8], tr("BitFlags"));
+    m_tabs->addTab(m_editorTabs[9], tr("Info"));
 }
 
 void MainWindow::applyTabsDisplay() {

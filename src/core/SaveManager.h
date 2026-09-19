@@ -187,7 +187,10 @@ struct SaveData {
     be32_t splatfestXP;
     uint8_t padding1[46100 - 0xB2F4];
     PlazaInkling plazaInklings[25];
-    uint8_t unk_before_amiibo[52292 - 52000];
+    uint8_t unk_after_plaza[24];
+    be32_t winSum;               // 0xCB38
+    be32_t loseSum;              // 0xCB3C
+    uint8_t unk_before_amiibo[260];
     be32_t girlChallenges[20];   // 0xCC44
     uint8_t girl_pad[4];
     be32_t boyChallenges[20];    // 0xCC98

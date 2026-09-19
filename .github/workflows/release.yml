@@ -22,7 +22,8 @@ jobs:
 
       - name: Compile and Package AppImage
         run: |
-          cmake -S . -B build/linux-release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+          TAG=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
+          cmake -S . -B build/linux-release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DSpoonSaveEditor_VERSION="$TAG"
           cmake --build build/linux-release --parallel $(nproc)
           strip build/linux-release/spoon_save_editor || true
 
@@ -111,7 +112,8 @@ jobs:
       - name: Compile and Package Zip
         shell: msys2 {0}
         run: |
-          cmake -S . -B "build/win-release" -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+          TAG=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
+          cmake -S . -B "build/win-release" -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DSpoonSaveEditor_VERSION="$TAG"
           cmake --build "build/win-release" --parallel
 
           mkdir -p "SpoonSaveEditor_windows"
@@ -142,7 +144,8 @@ jobs:
 
       - name: Compile and Package DMG
         run: |
-          cmake -S . -B "build/macos-release" -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+          TAG=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
+          cmake -S . -B "build/macos-release" -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DSpoonSaveEditor_VERSION="$TAG"
           cmake --build "build/macos-release" --parallel
           
           macdeployqt "build/macos-release/Spoon Save Editor.app"

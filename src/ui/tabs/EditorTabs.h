@@ -276,3 +276,14 @@ public:
 private:
     QCheckBox* m_flags[14];
 };
+
+class InfoTab : public EditorTabBase {
+    Q_OBJECT
+public:
+    explicit InfoTab(QWidget* parent = nullptr);
+    void loadData(SaveData* data) override;
+    void saveData(SaveData* data) override;
+private:
+    QLabel* m_winSum;
+    QLabel* m_loseSum;
+};
