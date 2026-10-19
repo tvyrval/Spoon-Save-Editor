@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake qt6-base-dev qt6-base-private-dev libgl1-mesa-dev
+
+      - name: Compile
+        run: |
+          cmake -S . -B build/linux-ci -DCMAKE_BUILD_TYPE=Release
+          cmake --build build/linux-ci --parallel $(nproc)
+
+      - name: Check Binary
+        run: |
+          test -x build/linux-ci/spoon_save_editor
+          file build/linux-ci/spoon_save_editor | grep -q ', stripped'
+
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-toolchain
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-qt6-base
+            make
+
+      - name: Compile
+        shell: msys2 {0}
+        run: |
+          cmake -S . -B build/win-ci -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+          cmake --build build/win-ci --parallel
+
+      - name: Check Binary
+        shell: msys2 {0}
+        run: |
+          test -f "build/win-ci/Spoon Save Editor.exe"
+          file "build/win-ci/Spoon Save Editor.exe"
+
+  build-macos:
+    name: Build macOS (Universal)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.11.1'
+
+      - name: Compile
+        run: |
+          cmake -S . -B build/macos-ci -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+          cmake --build build/macos-ci --parallel
+
+      - name: Check Bundle
+        run: |
+          test -d "build/macos-ci/Spoon Save Editor.app"
+
+  build-nix:
+    name: Build Nix (x86_64-linux)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Flake
+        run: nix build -L
+
+      - name: Check Package Contents
+        run: |
+          test -x result/bin/spoon_save_editor
+          test -f result/share/applications/spoon_save_editor.desktop
+          test -f result/share/icons/hicolor/256x256/apps/spoon_save_editor.png

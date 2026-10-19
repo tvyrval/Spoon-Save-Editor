@@ -100,12 +100,12 @@ jobs:
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: UCRT64
           update: true
           install: >-
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-qt6-base
+            mingw-w64-ucrt-x86_64-toolchain
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-qt6-base
             make
             zip
 
@@ -120,7 +120,7 @@ jobs:
           cp "build/win-release/Spoon Save Editor.exe" "SpoonSaveEditor_windows/"
           windeployqt "SpoonSaveEditor_windows/Spoon Save Editor.exe"
 
-          ldd "SpoonSaveEditor_windows/Spoon Save Editor.exe" | awk '/=> \// {print $3} /^\// {print $1}' | grep -i "/mingw64" | sort -u | xargs -I {} cp "{}" "SpoonSaveEditor_windows/" 2>/dev/null || true
+          ldd "SpoonSaveEditor_windows/Spoon Save Editor.exe" | awk '/=> \// {print $3} /^\// {print $1}' | grep -i "/ucrt64" | sort -u | xargs -I {} cp "{}" "SpoonSaveEditor_windows/" 2>/dev/null || true
 
           cd SpoonSaveEditor_windows
           zip -r "../SpoonSaveEditor-${{ github.event.release.tag_name }}-x64.zip" .
