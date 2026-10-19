@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(SpoonSaveEditor
-    VERSION 2.0.0
+    VERSION 2.0.1
     DESCRIPTION "Splatoon Save File Editor"
     LANGUAGES CXX)
 
