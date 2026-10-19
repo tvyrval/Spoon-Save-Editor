@@ -62,10 +62,17 @@ target_link_libraries(spoon_save_editor PRIVATE
 target_compile_definitions(spoon_save_editor PRIVATE APP_VERSION=\"${PROJECT_VERSION}\")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" AND CMAKE_STRIP)
-    add_custom_command(TARGET spoon_save_editor POST_BUILD
-        COMMAND ${CMAKE_STRIP} $<$<NOT:$<PLATFORM_ID:Darwin>>:--strip-unneeded> $<TARGET_FILE:spoon_save_editor>
-        VERBATIM
-    )
+    if(APPLE)
+        add_custom_command(TARGET spoon_save_editor POST_BUILD
+            COMMAND ${CMAKE_STRIP} $<TARGET_FILE:spoon_save_editor>
+            VERBATIM
+        )
+    else()
+        add_custom_command(TARGET spoon_save_editor POST_BUILD
+            COMMAND ${CMAKE_STRIP} --strip-unneeded $<TARGET_FILE:spoon_save_editor>
+            VERBATIM
+        )
+    endif()
 endif()
 
 if(WIN32)
