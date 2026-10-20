@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(SpoonSaveEditor
-    VERSION 2.0.0
+    VERSION 2.0.1
     DESCRIPTION "Splatoon Save File Editor"
     LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -59,6 +60,20 @@ target_link_libraries(spoon_save_editor PRIVATE
 )
 
 target_compile_definitions(spoon_save_editor PRIVATE APP_VERSION=\"${PROJECT_VERSION}\")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release" AND CMAKE_STRIP)
+    if(APPLE)
+        add_custom_command(TARGET spoon_save_editor POST_BUILD
+            COMMAND ${CMAKE_STRIP} $<TARGET_FILE:spoon_save_editor>
+            VERBATIM
+        )
+    else()
+        add_custom_command(TARGET spoon_save_editor POST_BUILD
+            COMMAND ${CMAKE_STRIP} --strip-unneeded $<TARGET_FILE:spoon_save_editor>
+            VERBATIM
+        )
+    endif()
+endif()
 
 if(WIN32)
     configure_file(resources.rc.in ${CMAKE_CURRENT_BINARY_DIR}/resources.rc @ONLY)

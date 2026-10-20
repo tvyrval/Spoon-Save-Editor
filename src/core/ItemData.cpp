@@ -20,7 +20,7 @@ const int g_RankCount = 11;
 
 const wchar_t* g_EyeColorNames[] = {
     L"0 (Brown)", L"1 (Pink)", L"2 (Blue)", L"3 (Orange)",
-    L"4 (Turquoise)", L"5 (Black)", L"6 (Yellow)"
+    L"4 (Green)", L"5 (Black)", L"6 (Yellow)"
 };
 const int g_EyeColorCount = 7;
 
@@ -101,7 +101,7 @@ const wchar_t* g_HeadNames[] = {
     L"7004 (Skate Helmet)", L"7005 (Visor Skate Helmet)", L"8000 (Gas Mask)", L"8001 (Paintball Mask)", L"8002 (Paisley Bandana)", L"8003 (Skull Bandana)",
     L"9001 (B-Ball Headband)", L"9002 (Squash Headband)", L"9003 (Tennis Headband)", L"9004 (Joggling Headband)", L"9005 (Football Headband)",
     L"9006 (Traditional Headband)", L"25000 (Squid Hairclip)", L"25001 (Samurai Helmet)", L"25002 (Power Mask)", L"27000 (Hero Headset Replica)",
-    L"27001 (?MSN001)", L"27002 (?MSN002)", L"27003 (?MSN003)", L"27004 (Armour Helmet Replica)", L"28000 (Octoling Scope)", L"28001 (\u30D8\u30EB\u30E1\u30C3\u30C8\u30E9\u30A4\u30D0\u30EB\u7528\u5F37)",
+    L"27001 (?MSN001)", L"27002 (?MSN002)", L"27003 (?MSN003)", L"27004 (Armour Helmet Replica)", L"28000 (Octoling Scope)", L"28001 (ヘルメットライバル用強)",
     L"29000 (?Attack_Up)", L"29001 (?Defense_Up)", L"29002 (?MainInk_Save)", L"29003 (?SubInk_Save)", L"29004 (?Inkrecovery_Up)", L"29005 (?HumanMove_Up)",
     L"29006 (?SquidMove_up)", L"29007 (?SpecialIncrease_Up)", L"29008 (?SpecialTime_Up)", L"29009 (?RespawnTime_Save)", L"29010 (?RespawnSpecialGauge_Save)",
     L"29011 (?JumpTime_Save)", L"29012 (?BombDistance_Up)", L"29013 (?StartAllUp)", L"29014 (?EndAllUp)", L"29015 (?MinorityUp)", L"29016 (?ComeBack)",
